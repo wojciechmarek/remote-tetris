@@ -14,7 +14,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@rtc-tetris/feature/gamepad": ["libs/feature/gamepad/src/index.ts"],
+      "@rtc-tetris/feature/layout": ["libs/feature/layout/src/index.ts"],
+      "@rtc-tetris/feature/start": ["libs/feature/start/src/index.ts"],
+      "@rtc-tetris/feature/tetris": ["libs/feature/tetris/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
