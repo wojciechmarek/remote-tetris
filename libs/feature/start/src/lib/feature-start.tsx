@@ -1,18 +1,17 @@
-import styled from '@emotion/styled';
+import { StartButton, StartButtonsContainer, StartContainer, StartLogo, StartLogoContainer, StartTitle } from './feature-start.styled';
 
-/* eslint-disable-next-line */
-export interface FeatureStartProps {}
 
-const StyledFeatureStart = styled.div`
-  color: pink;
-`;
-
-export function FeatureStart(props: FeatureStartProps) {
+export function TetrisStart() {
   return (
-    <StyledFeatureStart>
-      <h1>Welcome to FeatureStart!</h1>
-    </StyledFeatureStart>
+    <StartContainer>
+      <StartLogoContainer>
+        <StartLogo src="./assets/tetris.png" />
+      </StartLogoContainer>
+      <StartTitle>TETRIS</StartTitle>
+      <StartButtonsContainer>
+        <StartButton>START</StartButton>
+        <StartButton>SCORES</StartButton>
+      </StartButtonsContainer>
+    </StartContainer>
   );
 }
-
-export default FeatureStart;

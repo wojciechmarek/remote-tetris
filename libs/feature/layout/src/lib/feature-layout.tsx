@@ -1,18 +1,13 @@
-import styled from '@emotion/styled';
+import { TetrisStart } from '@rtc-tetris/feature/start';
+import { GameContainer, LayoutContainer } from './feature-layout.styled';
+import './styles/global.css';
 
-/* eslint-disable-next-line */
-export interface FeatureLayoutProps {}
-
-const StyledFeatureLayout = styled.div`
-  color: pink;
-`;
-
-export function FeatureLayout(props: FeatureLayoutProps) {
+export function TetrisLayout() {
   return (
-    <StyledFeatureLayout>
-      <h1>Welcome to FeatureLayout!</h1>
-    </StyledFeatureLayout>
+    <LayoutContainer>
+      <GameContainer>
+        <TetrisStart />
+      </GameContainer>
+    </LayoutContainer>
   );
 }
-
-export default FeatureLayout;

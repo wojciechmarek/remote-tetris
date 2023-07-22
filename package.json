@@ -2,7 +2,10 @@
   "name": "@rtc-tetris/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "dev": "nx run tetris:serve",
+    "build": "nx run tetris:build"
+  },
   "private": true,
   "dependencies": {
     "@emotion/react": "11.11.1",

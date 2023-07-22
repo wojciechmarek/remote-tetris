@@ -1,17 +1,7 @@
-import styled from '@emotion/styled';
-
-import NxWelcome from './nx-welcome';
-
-const StyledApp = styled.div`
-  // Your style here
-`;
+import { TetrisLayout } from '@rtc-tetris/feature/layout';
 
 export function App() {
   return (
-    <StyledApp>
-      <NxWelcome title="tetris" />
-    </StyledApp>
+    <TetrisLayout />
   );
 }
-
-export default App;
