@@ -1,12 +1,12 @@
-import { TetrisStart } from '@rtc-tetris/feature/start';
 import { GameContainer, LayoutContainer } from './feature-layout.styled';
 import './styles/global.css';
+import { Outlet } from 'react-router-dom';
 
-export function TetrisLayout() {
+export function Layout() {
   return (
     <LayoutContainer>
       <GameContainer>
-        <TetrisStart />
+        <Outlet />
       </GameContainer>
     </LayoutContainer>
   );

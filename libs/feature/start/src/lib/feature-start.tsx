@@ -1,7 +1,20 @@
-import { StartButton, StartButtonsContainer, StartContainer, StartLogo, StartLogoContainer, StartTitle } from './feature-start.styled';
+import {
+  QRCodeContainer,
+  StartButton,
+  StartButtonsContainer,
+  StartContainer,
+  StartLogo,
+  StartLogoContainer,
+  StartQrCodeContainer,
+  StartQrTitle,
+  StartTitle,
+} from './feature-start.styled';
+import QRCode from 'react-qr-code';
 
-
-export function TetrisStart() {
+export function Start() {
+  const handleStartClick = () => {
+    window.location.href = '/tetris';
+  };
   return (
     <StartContainer>
       <StartLogoContainer>
@@ -9,9 +22,15 @@ export function TetrisStart() {
       </StartLogoContainer>
       <StartTitle>TETRIS</StartTitle>
       <StartButtonsContainer>
-        <StartButton>START</StartButton>
+        <StartButton onClick={handleStartClick}>START</StartButton>
         <StartButton>SCORES</StartButton>
       </StartButtonsContainer>
+      <StartQrCodeContainer>
+        <StartQrTitle>Use you phone as a gamepad:</StartQrTitle>
+        <QRCodeContainer>
+          <QRCode value="https://web-rtc-tetris.netlify.app/gamepad/asdasd-asd-asda-sdasdasd-asd-asd-asd" />
+        </QRCodeContainer>
+      </StartQrCodeContainer>
     </StartContainer>
   );
 }
