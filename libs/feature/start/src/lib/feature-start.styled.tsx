@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 
 export const StartContainer = styled.div`
-  color: pink;
   height: 100%;
   width: 100%;
   display: flex;
@@ -9,6 +8,8 @@ export const StartContainer = styled.div`
 `;
 
 export const StartLogoContainer = styled.div`
+  margin-top: 5em;
+  margin-bottom: 1em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,12 +24,11 @@ export const StartLogo = styled.img`
 `;
 
 export const StartTitle = styled.h1`
-  margin-top: 1em;
   color: #121212;
   font-size: 3em;
   text-align: center;
   margin: 0.5em 0;
-  font-weight: bold;
+  font-weight: 900;
 `;
 
 export const StartButtonsContainer = styled.div` 

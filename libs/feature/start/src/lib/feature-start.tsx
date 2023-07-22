@@ -5,7 +5,7 @@ export function TetrisStart() {
   return (
     <StartContainer>
       <StartLogoContainer>
-        <StartLogo src="./assets/tetris.png" />
+        <StartLogo src="https://raw.githubusercontent.com/wojciechmarek/rtc-tetris/main/libs/feature/start/src/lib/tetris.svg" />
       </StartLogoContainer>
       <StartTitle>TETRIS</StartTitle>
       <StartButtonsContainer>

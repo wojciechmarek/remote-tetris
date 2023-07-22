@@ -12,4 +12,5 @@ export const GameContainer = styled.div`
   height: 50em;
   width: 25em;
   background-color: #EAECF4;
+  border-radius: 1em;
 `
