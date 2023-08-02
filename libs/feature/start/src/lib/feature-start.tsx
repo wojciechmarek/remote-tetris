@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import {
   QRCodeContainer,
   StartButton,
@@ -12,8 +13,10 @@ import {
 import QRCode from 'react-qr-code';
 
 export function Start() {
+  const navigation = useNavigate();
+
   const handleStartClick = () => {
-    window.location.href = '/tetris';
+    navigation('/tetris');
   };
   return (
     <StartContainer>
