@@ -29,12 +29,16 @@ import {
   PauseTitle,
   PauseButtonsContainer,
 } from './feature-tetris.styled';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import korobeiniki from './korobeiniki.mp3';
 
 export const Tetris = () => {
   const navigation = useNavigate();
   const [isPaused, setIsPaused] = useState(false);
+
+  const audio = useRef(new Audio(korobeiniki));
+  audio.current.playbackRate = 1;
 
   const handleOnPauseClick = () => {
     setIsPaused(!isPaused);
@@ -44,6 +48,14 @@ export const Tetris = () => {
     setIsPaused(false);
     navigation('/');
   }
+
+  useEffect(() => {
+    if (isPaused) {
+      audio.current.pause();
+    } else {
+      audio.current.play();
+    }
+  }, [isPaused, audio]);
 
   return (
     <>
