@@ -28,6 +28,7 @@ import {
   ResumeButton,
   PauseTitle,
   PauseButtonsContainer,
+  GameContainer,
 } from './feature-tetris.styled';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -58,7 +59,7 @@ export const Tetris = () => {
   }, [isPaused, audio]);
 
   return (
-    <>
+    <GameContainer>
       {isPaused && <PauseContainer>
         <PauseTitle>
           The game is paused
@@ -118,6 +119,6 @@ export const Tetris = () => {
           <ConnectionText>Connected to 123.122.244.2</ConnectionText>
         </TetrisConnectionContainer>
       </TetrisContainer>
-    </>
+    </GameContainer>
   );
 };

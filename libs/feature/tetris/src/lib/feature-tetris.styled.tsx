@@ -1,5 +1,12 @@
 import styled from '@emotion/styled';
 
+export const GameContainer = styled.div`
+  height: 50em;
+  width: 25em;
+  background-color: #EAECF4;
+  border-radius: 1em;
+`
+
 export const PauseContainer = styled.div`
   display: flex;
   flex-direction: column;

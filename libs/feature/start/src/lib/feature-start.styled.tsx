@@ -1,5 +1,12 @@
 import styled from '@emotion/styled';
 
+export const GameContainer = styled.div`
+  height: 50em;
+  width: 25em;
+  background-color: #EAECF4;
+  border-radius: 1em;
+`
+
 export const StartContainer = styled.div`
   height: 100%;
   width: 100%;
