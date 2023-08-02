@@ -1,174 +1,111 @@
-import styled from '@emotion/styled';
 import { Pause } from 'lucide-react';
+import {
+  PauseContainer,
+  ConnectionDot,
+  ConnectionText,
+  ContainerTitle,
+  HoldItem,
+  HoldText,
+  LevelContainer,
+  LevelScoreValue,
+  NextItem,
+  NextItemsContainer,
+  PlayPauseButton,
+  Progress,
+  ProgressContainer,
+  ProgressText,
+  ScoreContainer,
+  TetrisBoard,
+  TetrisConnectionContainer,
+  TetrisContainer,
+  TetrisHold,
+  TetrisHoldAndNextContainer,
+  TetrisLevelScoreContainer,
+  TetrisNext,
+  TetrisPlayPauseContainer,
+  TetrisProgress,
+  TetrisScoreAndPauseContainer,
+  ResumeButton,
+  PauseTitle,
+  PauseButtonsContainer,
+} from './feature-tetris.styled';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const TetrisContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  gap: 0.75em;
-  flex-direction: column;
-  padding: 3.5em 1.5em 2.75em;
-`;
+export const Tetris = () => {
+  const navigation = useNavigate();
+  const [isPaused, setIsPaused] = useState(false);
 
-const TetrisProgress = styled.div`
-  width: 100%;
-  background-color: #2d3348;
-  height: 1.5em;
-`;
-
-const TetrisHoldAndNextContainer = styled.div`
-  height: 5.5em;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 0.75em;
-`;
-
-const TetrisHold = styled.div`
-  flex: 1;
-  height: 100%;
-  background-color: #252936;
-  border-radius: 1em;
-`;
-
-const TetrisNext = styled.div`
-  flex: 2;
-  height: 100%;
-  background-color: #252936;
-  border-radius: 1em;
-`;
-
-const TetrisBoard = styled.div`
-  height: 100%;
-  background-color: #252936;
-  border-radius: 1em;
-`;
-
-const TetrisScoreAndPauseContainer = styled.div`
-  height: 5.5em;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 0.75em;
-`;
-
-const TetrisLevelScoreContainer = styled.div`
-  flex: 2;
-  height: 100%;
-  width: 50%;
-  background-color: #252936;
-  border-radius: 1em;
-  display: flex;
-`;
-
-const LevelContainer = styled.div`
-  flex: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ScoreContainer = styled.div`
-  flex: 1;
-  height: 100%;
-`;
-
-const ContainerTitle = styled.p`
-  color: #eaecf4;
-  font-size: 0.75rem;
-  font-weight: bold;
-  margin-left: 1em;
-  margin-top: 0.25em;
-  text-align: start;
-`;
-
-const LevelScoreValue = styled.p`
-  color: #eaecf4;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-align: center;
-`;
-
-const TetrisPlayPauseContainer = styled.div`
-  flex: 1;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const PlayPauseButton = styled.button`
-  height: 100%;
-  width: 100%;
-
-  background-color: transparent;
-  border: none;
-  border-radius: 1em;
-  color: #252936;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  border: 1px solid #252936;
-
-  &:hover {
-    background-color: #252936;
-    color: #eaecf4;
+  const handleOnPauseClick = () => {
+    setIsPaused(!isPaused);
   }
-`;
 
-const TetrisConnectionContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 0.5em;
-  align-items: center;
-`;
+  const handleOnExitClick = () => {
+    setIsPaused(false);
+    navigation('/');
+  }
 
-const ConnectionDot = styled.div`
-  height: 0.75em;
-  width: 0.75em;
-  border-radius: 50%;
-  background-color: #10c010;
-`;
-
-const ConnectionText = styled.p`
-  color: #252936;
-  font-size: 0.75rem;
-  font-weight: bold;
-  text-align: start;
-`;
-
-export function Tetris() {
   return (
-    <TetrisContainer>
-      <TetrisProgress>Progress</TetrisProgress>
-      <TetrisHoldAndNextContainer>
-        <TetrisHold>Hold</TetrisHold>
-        <TetrisNext>Next</TetrisNext>
-      </TetrisHoldAndNextContainer>
-      <TetrisBoard>Board</TetrisBoard>
-      <TetrisScoreAndPauseContainer>
-        <TetrisLevelScoreContainer>
-          <LevelContainer>
-            <ContainerTitle>Level:</ContainerTitle>
-            <LevelScoreValue>8</LevelScoreValue>
-          </LevelContainer>
-          <ScoreContainer>
-            <ContainerTitle>Score:</ContainerTitle>
-            <LevelScoreValue>3357</LevelScoreValue>
-          </ScoreContainer>
-        </TetrisLevelScoreContainer>
-        <TetrisPlayPauseContainer>
-          <PlayPauseButton>
-            <Pause />
-          </PlayPauseButton>
-        </TetrisPlayPauseContainer>
-      </TetrisScoreAndPauseContainer>
-      <TetrisConnectionContainer>
-        <ConnectionDot />
-        <ConnectionText>Connected to 123.122.244.2</ConnectionText>
-      </TetrisConnectionContainer>
-    </TetrisContainer>
+    <>
+      {isPaused && <PauseContainer>
+        <PauseTitle>
+          The game is paused
+        </PauseTitle>
+        <PauseButtonsContainer>
+          <ResumeButton onClick={handleOnPauseClick}>
+            RESUME
+          </ResumeButton>
+          <ResumeButton onClick={handleOnExitClick}>
+            EXIT THE GAME
+          </ResumeButton>
+        </PauseButtonsContainer>
+
+      </PauseContainer>}
+
+      <TetrisContainer>
+        <TetrisProgress>
+          <ProgressText>Level progress:</ProgressText>
+          <ProgressContainer>
+            <Progress />
+          </ProgressContainer>
+        </TetrisProgress>
+        <TetrisHoldAndNextContainer>
+          <TetrisHold>
+            <HoldText>Hold</HoldText>
+            <HoldItem>L</HoldItem>
+          </TetrisHold>
+          <TetrisNext>
+            <HoldText>Next</HoldText>
+            <NextItemsContainer>
+              <NextItem>L</NextItem>
+              <NextItem>O</NextItem>
+              <NextItem>S</NextItem>
+            </NextItemsContainer>
+          </TetrisNext>
+        </TetrisHoldAndNextContainer>
+        <TetrisBoard>Board</TetrisBoard>
+        <TetrisScoreAndPauseContainer>
+          <TetrisLevelScoreContainer>
+            <LevelContainer>
+              <ContainerTitle>Level:</ContainerTitle>
+              <LevelScoreValue>8</LevelScoreValue>
+            </LevelContainer>
+            <ScoreContainer>
+              <ContainerTitle>Score:</ContainerTitle>
+              <LevelScoreValue>3357</LevelScoreValue>
+            </ScoreContainer>
+          </TetrisLevelScoreContainer>
+          <TetrisPlayPauseContainer>
+            <PlayPauseButton onClick={handleOnPauseClick}>
+              <Pause />
+            </PlayPauseButton>
+          </TetrisPlayPauseContainer>
+        </TetrisScoreAndPauseContainer>
+        <TetrisConnectionContainer>
+          <ConnectionDot />
+          <ConnectionText>Connected to 123.122.244.2</ConnectionText>
+        </TetrisConnectionContainer>
+      </TetrisContainer>
+    </>
   );
-}
+};

@@ -42,8 +42,8 @@ export const StartButtonsContainer = styled.div`
 `;
 
 export const StartButton = styled.button`
-padding: 1em 0;
-  width: 20em;
+  padding: 1em 0;
+  width: 100%;
   background-color: #252936;
   border: none;
   border-radius: 0.75em;
@@ -52,10 +52,11 @@ padding: 1em 0;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
+  border: 1px solid #252936;
 
   &:hover {
-    background-color: #252936;
-    color: #EAECF4;
+    background-color: #EAECF4;
+    color: #252936;
   }
 `;
 
