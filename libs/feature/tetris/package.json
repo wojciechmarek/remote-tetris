@@ -1,5 +1,5 @@
 {
-  "name": "@rtc-tetris/feature/tetris",
+  "name": "@rtc-games/feature/tetris",
   "version": "0.0.1",
   "main": "./index.js",
   "types": "./index.d.ts",

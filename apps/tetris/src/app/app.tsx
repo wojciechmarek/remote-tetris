@@ -1,4 +1,4 @@
-import { router } from '@rtc-tetris/feature/layout';
+import { router } from '@rtc-games/feature/layout';
 import { RouterProvider } from 'react-router-dom';
 
 export function App() {

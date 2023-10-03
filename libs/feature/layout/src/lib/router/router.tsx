@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { Layout } from '../feature-layout';
-import { Start } from '@rtc-tetris/feature/start';
-import { Tetris } from '@rtc-tetris/feature/tetris';
-import { Gamepad } from '@rtc-tetris/feature/gamepad';
+import { Start } from '@rtc-games/feature/start';
+import { Tetris } from '@rtc-games/feature/tetris';
+import { Gamepad } from '@rtc-games/feature/gamepad';
 
 export const router = createBrowserRouter([
   {

@@ -8,7 +8,7 @@ The app's purpose is to learn Web RTC.
 
 ## Demo
 
-A demo is available at [web-rtc-tetris.netlify.app/](web-rtc-tetris.netlify.app/).
+A demo is available at [web-rtc-games.netlify.app/](web-rtc-games.netlify.app/).
 
 ## Screenshots
 

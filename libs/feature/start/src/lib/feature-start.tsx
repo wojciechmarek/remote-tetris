@@ -23,7 +23,7 @@ export function Start() {
     <GameContainer>
       <StartContainer>
         <StartLogoContainer>
-          <StartLogo src="https://raw.githubusercontent.com/wojciechmarek/rtc-tetris/main/libs/feature/start/src/lib/tetris.svg" />
+          <StartLogo src="https://raw.githubusercontent.com/wojciechmarek/rtc-games/main/libs/feature/start/src/lib/tetris.svg" />
         </StartLogoContainer>
         <StartTitle>TETRIS</StartTitle>
         <StartButtonsContainer>
@@ -33,7 +33,7 @@ export function Start() {
         <StartQrCodeContainer>
           <StartQrTitle>Use you phone as a gamepad:</StartQrTitle>
           <QRCodeContainer>
-            <QRCode value="https://web-rtc-tetris.netlify.app/gamepad" />
+            <QRCode value="https://web-rtc-games.netlify.app/gamepad" />
           </QRCodeContainer>
         </StartQrCodeContainer>
       </StartContainer>
