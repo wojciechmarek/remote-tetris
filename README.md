@@ -1,6 +1,6 @@
-# Web RTC Tetris
+# Web RTC Games
 
-A simple Tetris game with remote (and wireless 😛) gamepad support.
+The games with remote (and wireless 😛) gamepad support.
 
 ## Description
 
@@ -19,7 +19,7 @@ Not yet
 - 🎁 Repository: Monorepo powered by NX
 - 🧰 Frameworks: React
 - 🛠️ Tools: react-router
-- 🎨 Styling: styled components by emotion, lucide icons
+- 🎨 Styling: styled-components by emotion, lucide icons
 - 🧪 Testing: ~~cypress, jest~~
 - ☁️ Data source: ~~json-server~~
 - 💎 Others: desktop-first approach, ~~progressive web app, atomic design~~
