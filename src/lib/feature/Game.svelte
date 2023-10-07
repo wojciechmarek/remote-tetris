@@ -1,9 +1,16 @@
 <script lang="ts">
   import backgroundImage from '../../assets/background/back1.jpg';
+
+  let isStartStripVisible = true;
+
+  const onSelectKeyboardClick = () => {
+    isStartStripVisible = false;
+  }
 </script>
 
 <div class="game__container">
   <img src={backgroundImage} class="game__background" alt="background" />
+  {#if isStartStripVisible}
   <div class="game__start-strip">
     <h1 class="game__start-strip__header">Welcome to Web RTC Games</h1>
     <h3 class="game__start-strip__sub-header">Selected one of the supported types of controllers:</h3>
@@ -22,13 +29,16 @@
         <div class="game__controller-option__image">
           <img src="" />
         </div>
-        <button class="game__controller-option__button">Start</button>
+        <button class="game__controller-option__button"
+          on:click={onSelectKeyboardClick}
+        >Start</button>
       </div>
     </div>  
     <div class="game__small-width-warning">
       <h5 class="game__small-width-warning__header">For better experience, please use a device with a width of at least 1024px.</h5>
     </div>
   </div>
+  {/if}
 </div>
 
 <style>
