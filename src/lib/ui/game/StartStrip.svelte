@@ -1,4 +1,5 @@
 <script lang="ts">
+  import wasdButtons from '../../../assets/images/wasd.jpg';
   import { createEventDispatcher } from "svelte";
 
   const dispatch = createEventDispatcher();
@@ -14,37 +15,42 @@
 </script>
 
 {#if isStartStripVisible}
-  <div class="game__start-strip">
-    <h1 class="game__start-strip__header">Welcome to Web RTC Games</h1>
-    <h3 class="game__start-strip__sub-header">
+  <div class="game-strip__container">
+    <h1 class="game-strip__container__header">Welcome to Web RTC Games</h1>
+    <h3 class="game-strip__container__sub-header">
       Selected one of the supported types of controllers:
     </h3>
-    <div class="game__controller-options__container">
-      <div class="game__controller-option">
-        <h5 class="game__controller-option__header">Scan a QR code:</h5>
-        <div class="game__controller-option__image">
+    <div class="game-strip__controller-options__container">
+      <div class="game-strip__controller-option">
+        <h5 class="game-strip__controller-option__header">Scan a QR code:</h5>
+        <div class="game-strip__controller-option__image">
           <img
             src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=HelloWorld"
             alt="QR code"
+            class="game-strip__controller-option__img"
           />
         </div>
+        <button
+          class="game-strip__controller-option__button"
+          on:click={onSelectKeyboardClick}>Start</button
+        >
       </div>
-      <div class="game__or-text">
+      <div class="game-strip__or-text">
         <h5>or</h5>
       </div>
-      <div class="game__controller-option">
-        <h5 class="game__controller-option__header">Use a keyboard</h5>
-        <div class="game__controller-option__image">
-          <img src="" />
+      <div class="game-strip__controller-option">
+        <h5 class="game-strip__controller-option__header">Use a keyboard:</h5>
+        <div class="game-strip__controller-option__image">
+          <img src={wasdButtons} alt="keyboard buttons" class="game-strip__controller-option__img"/>
         </div>
         <button
-          class="game__controller-option__button"
+          class="game-strip__controller-option__button"
           on:click={onSelectKeyboardClick}>Start</button
         >
       </div>
     </div>
-    <div class="game__small-width-warning">
-      <h5 class="game__small-width-warning__header">
+    <div class="game-strip__small-width-warning">
+      <h5 class="game-strip__small-width-warning__header">
         For better experience, please use a device with a width of at least
         1024px.
       </h5>
@@ -53,7 +59,7 @@
 {/if}
 
 <style>
-  .game__start-strip {
+  .game-strip__container {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.9);
     position: absolute;
@@ -63,7 +69,7 @@
     padding: 50px 0;
   }
 
-  .game__start-strip__header {
+  .game-strip__container__header {
     color: white;
     text-align: center;
     font-size: 3rem;
@@ -72,49 +78,56 @@
     font-weight: bolder;
   }
 
-  .game__start-strip__sub-header {
+  .game-strip__container__sub-header {
     color: white;
     text-align: center;
     margin: 0;
     padding: 0;
   }
 
-  .game__controller-options__container {
+  .game-strip__controller-options__container {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 30px;
-    gap: 25px;
+    gap: 75px;
   }
 
-  .game__or-text {
+  .game-strip__or-text {
     color: white;
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: bold;
   }
 
-  .game__controller-option {
+  .game-strip__controller-option {
+    height: 220px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    margin: 0 20px;
   }
 
-  .game__controller-option__header {
+  .game-strip__controller-option__header {
     color: white;
+    font-size: 1rem;
     margin: 0;
     padding: 0;
     margin-bottom: 5px;
   }
 
-  .game__controller-option__image {
+  .game-strip__controller-option__image {
     width: 150px;
     height: 150px;
     border-radius: 5px;
   }
 
-  .game__small-width-warning {
+  .game-strip__controller-option__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .game-strip__small-width-warning {
     display: none;
     justify-content: center;
     align-items: center;
@@ -126,7 +139,7 @@
     }
   }
 
-  .game__small-width-warning__header {
+  .game-strip__small-width-warning__header {
     color: white;
     margin: 0;
     padding: 0;
@@ -135,7 +148,8 @@
     text-align: center;
   }
 
-  .game__controller-option__button {
+  .game-strip__controller-option__button {
+    margin-top: 10px;
     width: 150px;
     height: 50px;
     border-radius: 5px;
