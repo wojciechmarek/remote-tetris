@@ -20,7 +20,7 @@ Not yet
 - 🧰 Frameworks: Svelte and Vite build system
 - 🛠️ Tools: not yet
 - 🎨 Styling: standard CSS
-- 💎 Others: desktop-first approach, web RTC communication
+- 💎 Others: desktop-first approach, web RTC communication, leonardo.ai
 
 ## How to start
 
