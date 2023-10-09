@@ -5,7 +5,7 @@
 
   const dispatch = createEventDispatcher();
 
-  export let isStartStripVisible = true;
+  export let isStartStripVisible: boolean = false;
   export let qrCodeValue = "";
 
   const onRefreshCodeClick = () => {
