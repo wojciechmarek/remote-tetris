@@ -1,17 +1,20 @@
 <script lang="ts">
-  import wasdButtons from '../../../assets/images/wasd.jpg';
+  import wasdButtonsImage from "../../../assets/images/wasd.jpg";
   import { createEventDispatcher } from "svelte";
+  import QrCode from "svelte-qrcode";
 
   const dispatch = createEventDispatcher();
-  
-  let isStartStripVisible = true;
 
-  const onSelectKeyboardClick = () => {
-    isStartStripVisible = false;
-    dispatch("onSelectKeyboardClick");
+  export let isStartStripVisible = true;
+  export let qrCodeValue = "";
+
+  const onRefreshCodeClick = () => {
+    dispatch("refreshQrCodeClick");
   };
 
-
+  const onSelectKeyboardClick = () => {
+    dispatch("selectKeyboardClick");
+  };
 </script>
 
 {#if isStartStripVisible}
@@ -22,30 +25,32 @@
     </h3>
     <div class="game-strip__controller-options__container">
       <div class="game-strip__controller-option">
-        <h5 class="game-strip__controller-option__header">Scan a QR code:</h5>
+        <h5 class="game-strip__controller-option__header">Scan a QR code</h5>
         <div class="game-strip__controller-option__image">
-          <img
-            src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=HelloWorld"
-            alt="QR code"
-            class="game-strip__controller-option__img"
-          />
+          <div class="game-strip__controller-option__img">
+            <QrCode value={qrCodeValue} size={130} />
+          </div>
         </div>
         <button
           class="game-strip__controller-option__button"
-          on:click={onSelectKeyboardClick}>Start</button
+          on:click={onRefreshCodeClick}>Refresh code</button
         >
       </div>
       <div class="game-strip__or-text">
         <h5>or</h5>
       </div>
       <div class="game-strip__controller-option">
-        <h5 class="game-strip__controller-option__header">Use a keyboard:</h5>
+        <h5 class="game-strip__controller-option__header">Use a keyboard</h5>
         <div class="game-strip__controller-option__image">
-          <img src={wasdButtons} alt="keyboard buttons" class="game-strip__controller-option__img"/>
+          <img
+            src={wasdButtonsImage}
+            alt="keyboard buttons"
+            class="game-strip__controller-option__img"
+          />
         </div>
         <button
           class="game-strip__controller-option__button"
-          on:click={onSelectKeyboardClick}>Start</button
+          on:click={onSelectKeyboardClick}>Start a game</button
         >
       </div>
     </div>
@@ -100,10 +105,9 @@
   }
 
   .game-strip__controller-option {
-    height: 220px;
+    height: 250px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
   }
 
@@ -112,19 +116,21 @@
     font-size: 1rem;
     margin: 0;
     padding: 0;
-    margin-bottom: 5px;
   }
 
   .game-strip__controller-option__image {
+    margin-top: 1px;
     width: 150px;
     height: 150px;
     border-radius: 5px;
+    background-color: white;
   }
 
   .game-strip__controller-option__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    padding: 8px;
   }
 
   .game-strip__small-width-warning {
@@ -156,7 +162,7 @@
     border: none;
     background-color: #950098;
     color: white;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
