@@ -1,5 +1,5 @@
 <script lang="ts">
-  import wasdButtonsImage from "../../../assets/images/wasd.jpg";
+  import wasdButtonsImage from "../../../assets/images/wasd_keys.webp";
   import { createEventDispatcher } from "svelte";
   import QrCode from "svelte-qrcode";
 

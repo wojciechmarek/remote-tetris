@@ -1,5 +1,5 @@
 <script lang="ts">
-  import backgroundImage from "../../assets/background/back1.jpg";
+  import backgroundImage from "../../assets/images/background.webp";
   import Player from "../ui/game/Player.svelte";
   import StartStrip from "../ui/game/StartStrip.svelte";
 
