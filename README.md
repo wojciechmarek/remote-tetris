@@ -12,7 +12,7 @@ A demo is available at [https://web-rtc-games.vercel.app](https://web-rtc-games.
 
 ## Screenshots
 
-![Screenshot 1](./screenshots/landing.png)
+![Screenshot 1](./screenshots/landing.webp)
 
 ## Used technologies
 
