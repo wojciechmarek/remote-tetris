@@ -3,7 +3,7 @@
   import Player from "../ui/game/Player.svelte";
   import StartStrip from "../ui/game/StartStrip.svelte";
 
-  let qrCodeValue = "HelloWorld";
+  let qrCodeValue = "https://web-rtc-games.vercel.app/controller";
   let isStartStripVisible = true;
   let isPlayerVisible = false;
 
@@ -23,8 +23,8 @@
 <div class="game__container">
   <img src={backgroundImage} class="game__background" alt="background" />
   <StartStrip
-    bind:isStartStripVisible={isStartStripVisible}
-    bind:qrCodeValue={qrCodeValue}
+    isStartStripVisible={isStartStripVisible}
+    qrCodeValue={qrCodeValue}
     on:refreshQrCodeClick={onRefreshQrCodeClick}
     on:selectKeyboardClick={onSelectKeyboardClick}
   />
