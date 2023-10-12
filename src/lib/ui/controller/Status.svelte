@@ -1,6 +1,10 @@
+<script lang="ts">
+  export let id: string = "";
+</script>
+
 <div class="status__container">
   <span class="status__dot"></span>
-  <p class="status__text">Controller is connected to 192.168.1.1</p>
+  <p class="status__text">Controller is connected to {id}</p>
 </div>
 
 <style>

@@ -2,10 +2,12 @@
   import Nintendo from "../ui/controller/Nintendo.svelte";
   import Status from "../ui/controller/Status.svelte";
   import Warning from "../ui/controller/Warning.svelte";
+
+  export let id: string;
 </script>
 
 <div class="controller__container">
-  <Status />
+  <Status {id} />
   <div class="controller__nintendo">
     <Nintendo />
   </div>
