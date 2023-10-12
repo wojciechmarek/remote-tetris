@@ -2,13 +2,16 @@
   import backgroundImage from "../../assets/images/background.webp";
   import Player from "../ui/game/Player.svelte";
   import StartStrip from "../ui/game/StartStrip.svelte";
+  import { v4 as uuidv4 } from "uuid";
 
-  let qrCodeValue = "https://web-rtc-games.vercel.app/controller";
+  const url = "https://web-rtc-games.vercel.app/controller?id=";
+
+  let qrCodeValue = `${url}${uuidv4()}`;
   let isStartStripVisible = true;
   let isPlayerVisible = false;
 
   const onRefreshQrCodeClick = () => {
-    qrCodeValue = new Date().getTime().toString();
+    qrCodeValue = `${url}${uuidv4()}`;
   };
 
   const onSelectKeyboardClick = () => {
@@ -23,14 +26,12 @@
 <div class="game__container">
   <img src={backgroundImage} class="game__background" alt="background" />
   <StartStrip
-    isStartStripVisible={isStartStripVisible}
-    qrCodeValue={qrCodeValue}
+    {isStartStripVisible}
+    {qrCodeValue}
     on:refreshQrCodeClick={onRefreshQrCodeClick}
     on:selectKeyboardClick={onSelectKeyboardClick}
   />
-  <Player
-    bind:isPlayerVisible={isPlayerVisible}
-  />
+  <Player bind:isPlayerVisible />
 </div>
 
 <style>

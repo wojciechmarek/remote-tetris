@@ -6,7 +6,7 @@
   <img
     src={controllerImage}
     alt="controller"
-    class="controller__img"
+    class="nintendo__img"
   />
 </div>
 
@@ -15,5 +15,10 @@
     width: 100%;
     height: 100vh;
     background-color: white;
+  }
+
+  .nintendo__img {
+    width: 100%;
+    height: 100%;
   }
 </style>

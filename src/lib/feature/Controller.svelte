@@ -1,15 +1,16 @@
 <script lang="ts">
   import Nintendo from "../ui/controller/Nintendo.svelte";
+  import Status from "../ui/controller/Status.svelte";
+  import Warning from "../ui/controller/Warning.svelte";
 </script>
 
 <div class="controller__container">
-  <div class="controller__component">
+  <Status />
+  <div class="controller__nintendo">
     <Nintendo />
   </div>
   <div class="controller__orientation-warning">
-    <h5 class="controller__orientation-warning__header">
-      Controller is not supported in vertical orientation. Please rotate your
-    </h5>
+    <Warning />
   </div>
 </div>
 
@@ -20,9 +21,13 @@
     background-color: white;
   }
 
-  .controller__component {
+  .controller__nintendo {
     width: 100%;
     height: 100%;
+
+    @media (orientation: portrait) {
+      display: none;
+    }
   }
 
   .controller__orientation-warning {
@@ -32,17 +37,9 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: white;
 
     @media (orientation: portrait) {
       display: flex;
     }
-  }
-
-  .controller__orientation-warning__header {
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: #000000;
-    text-align: center;
   }
 </style>
