@@ -4,7 +4,7 @@
   import StartStrip from "../ui/game/StartStrip.svelte";
   import { v4 as uuidv4 } from "uuid";
 
-  const url = "https://web-rtc-games.vercel.app/controller?id=";
+  const url = "https://web-rtc-games.vercel.app/controller/";
 
   let qrCodeValue = `${url}${uuidv4()}`;
   let isStartStripVisible = true;
