@@ -5,7 +5,7 @@
 
   import { v4 as uuidv4 } from "uuid";
 
-  const url = "https://web-rtc-games.vercel.app/controller/";
+  const url = "https://web-rtc-tetris.vercel.app/controller/";
 
   let qrCodeValue = `${url}${uuidv4()}`;
   let isStartBannerVisible = true;
