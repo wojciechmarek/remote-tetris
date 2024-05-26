@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Nintendo from "../ui/controller/Nintendo.svelte";
-  import Status from "../ui/controller/Status.svelte";
-  import Warning from "../ui/controller/Warning.svelte";
+  import Nintendo from "../components/controller/Nintendo.svelte";
+  import Status from "../components/controller/Status.svelte";
+  import Warning from "../components/controller/Warning.svelte";
 
   export let id: string;
 </script>
