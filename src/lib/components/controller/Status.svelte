@@ -21,14 +21,13 @@
 <style>
   .status__container {
     position: absolute;
-    background-color: #284fe6;
+    background-color: #284ee6;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: start;
     top: 0;
     padding: 3px 10px;
-    gap: 10px;
   }
 
   .status__row {
@@ -40,8 +39,8 @@
 
   .status__dot {
     display: inline-block;
-    width: 0.25rem;
-    height: 0.25rem;
+    width: 0.5rem;
+    height: 0.5rem;
     background-color: #00ff00;
     border-radius: 50%;
     margin-bottom: 0.125em;
@@ -51,7 +50,7 @@
   }
 
   .status__text {
-    font-size: 0.25rem;
+    font-size: 0.5rem;
     font-weight: 400;
     color: white;
     text-shadow: #000000 0 1px;
