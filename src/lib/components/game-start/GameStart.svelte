@@ -67,7 +67,7 @@
   }
 
   .game-start__content2 {
-    background-color: #232f95;
+    background-color: #1e287d;
     padding: 0.25em;
   }
 
@@ -80,11 +80,10 @@
     color: #52b5ee;
     text-align: center;
     text-transform: uppercase;
-    font-weight: 900;
     font-size: 3rem;
     margin: 0;
     padding: 0;
-    text-shadow: #000000 3px 3px;
+    text-shadow: #000000 0px 5px;
   }
 
   .game-start__controllers-container {
@@ -113,84 +112,4 @@
     object-fit: cover;
     padding: 8px;
   }
-
-  /* .game-start__container__sub-header {
-    color: white;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-  }
-
-  .game-start__controller-options__container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-    gap: 75px;
-  }
-
-  .game-start__or-text {
-    color: white;
-    font-size: 2.5rem;
-    font-weight: bold;
-  }
-
-  .game-start__controller-option {
-    height: 250px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .game-start__controller-option__header {
-    color: white;
-    font-size: 1rem;
-    margin: 0;
-    padding: 0;
-  }
-
-
-
-  .game-start__controller-option__img {
-
-  }
-
-  .game-start__small-width-warning {
-    display: none;
-    justify-content: center;
-    align-items: center;
-    height: 75px;
-    background-color: rgba(255, 0, 0);
-
-    @media (max-width: 1024px) {
-      display: flex;
-    }
-  }
-
-  .game-start__small-width-warning__header {
-    color: white;
-    margin: 0;
-    padding: 0;
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-align: center;
-  }
-
-  .game-start__controller-option__button {
-    margin-top: 10px;
-    width: 150px;
-    height: 50px;
-    border-radius: 5px;
-    border: none;
-    background-color: #950098;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-
-    &:hover {
-      background-color: #836ebc;
-    }
-  } */
 </style>

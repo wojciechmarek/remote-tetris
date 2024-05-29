@@ -3,37 +3,57 @@
 </script>
 
 <div class="status__container">
-  <span class="status__dot"></span>
-  <p class="status__text">Controller is connected to {id}</p>
+  <div class="status__row">
+    <p class="status__text">
+      Connected to: <span class="status__dot" />123.126.34.11 / {id}
+    </p>
+  </div>
+
+  <div class="status__row">
+    <p class="status__text">Your score: 23 rows</p>
+  </div>
+
+  <div class="status__row">
+    <p class="status__text">Ping: 12ms</p>
+  </div>
 </div>
 
 <style>
   .status__container {
     position: absolute;
-    background-color: #00000090;
+    background-color: #284fe6;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     top: 0;
     padding: 3px 10px;
-    gap: 10px
+    gap: 10px;
+  }
+
+  .status__row {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1em;
   }
 
   .status__dot {
     display: inline-block;
-    width: 1rem;
-    height: 1rem;
+    width: 0.85rem;
+    height: 0.85rem;
     background-color: #00ff00;
     border-radius: 50%;
-    margin: 0;
+    margin-bottom: 0.125em;
+    margin-right: 0.5em;
     padding: 0;
+    box-shadow: #000000 0 2px;
   }
 
   .status__text {
     font-size: 1rem;
     font-weight: 400;
     color: white;
-    text-align: center;
-    font-weight: bold;
+    text-shadow: #000000 0 2px;
   }
 </style>

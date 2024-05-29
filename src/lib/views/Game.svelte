@@ -1,6 +1,6 @@
 <script lang="ts">
   import GameStart from "@components/game-start/GameStart.svelte";
-  import backgroundImage from "../../assets/images/background.webp";
+  import backgroundImage from "@images/background.webp";
   import Player from "../components/game-board/Canvas.svelte";
 
   import { v4 as uuidv4 } from "uuid";

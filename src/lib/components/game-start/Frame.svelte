@@ -19,14 +19,13 @@
 
   .value-frame__title {
     background-color: #151c59;
-    padding: 0 0.75em;
+    padding: 0.5em 0.75em;
   }
 
   .value-frame__title-paragraph {
-    margin: 0;
     color: #52b5ee;
     font-weight: 900;
-    font-size: 1.5rem;
+    font-size: 1rem;
     text-align: center;
   }
 
@@ -34,7 +33,6 @@
     display: flex;
     background-color: #1e287d;
     padding: 1.5em;
-
     justify-content: center;
   }
 </style>

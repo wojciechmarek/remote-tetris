@@ -6,16 +6,16 @@
 
 <style>
   .button {
-    border: 0.25em solid #232f95;
-    background-color: #6365e5;
-    font-size: 1.25em;
+    border: 0.25em solid #151c59;
+    background-color: #1e287d;
+    font-size: 1em;
     font-weight: 900;
     cursor: pointer;
-    padding: 0.5em 0em;
+    padding: 0.75em 0em;
   }
 
   .button:hover {
-    border: 0.25em solid #3a47be;
-    background-color: #8284ef;
+    border: 0.25em solid #1e287d;
+    background-color: rgb(44, 58, 184);
   }
 </style>

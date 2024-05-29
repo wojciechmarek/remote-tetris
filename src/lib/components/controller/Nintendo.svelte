@@ -1,13 +1,9 @@
 <script lang="ts">
-  import controllerImage from "../../../assets/images/nintendo.webp";
+  import controllerImage from "@images/nintendo.webp";
 </script>
 
 <div class="nintendo__container">
-  <img
-    src={controllerImage}
-    alt="controller"
-    class="nintendo__img"
-  />
+  <img src={controllerImage} alt="controller" class="nintendo__img" />
 </div>
 
 <style>
@@ -20,5 +16,6 @@
   .nintendo__img {
     width: 100%;
     height: 100%;
+    object-fit: contain;
   }
 </style>
