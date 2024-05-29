@@ -40,20 +40,20 @@
 
   .status__dot {
     display: inline-block;
-    width: 0.85rem;
-    height: 0.85rem;
+    width: 0.25rem;
+    height: 0.25rem;
     background-color: #00ff00;
     border-radius: 50%;
     margin-bottom: 0.125em;
     margin-right: 0.5em;
     padding: 0;
-    box-shadow: #000000 0 2px;
+    box-shadow: #000000 0 1px;
   }
 
   .status__text {
-    font-size: 1rem;
+    font-size: 0.25rem;
     font-weight: 400;
     color: white;
-    text-shadow: #000000 0 2px;
+    text-shadow: #000000 0 1px;
   }
 </style>
