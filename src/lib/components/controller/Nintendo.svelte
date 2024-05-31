@@ -2,7 +2,7 @@
   import controllerImage from "@images/nintendo.webp";
 
   const handleClick = () => {
-    navigator.vibrate(200); // vibrate for 200ms
+    navigator.vibrate(50); // vibrate for 200ms
   };
 </script>
 
