@@ -1,9 +1,8 @@
 <script lang="ts">
   import controllerImage from "@images/nintendo.webp";
-  import controllerMask from "@images/nintendo-mask.svg";
 
   const handleClick = () => {
-    alert("asd");
+    navigator.vibrate(200); // vibrate for 200ms
   };
 </script>
 
