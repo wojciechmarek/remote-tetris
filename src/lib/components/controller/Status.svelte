@@ -20,6 +20,7 @@
 
 <style>
   .status__container {
+    z-index: 1;
     position: absolute;
     background-color: #284ee6;
     display: flex;
