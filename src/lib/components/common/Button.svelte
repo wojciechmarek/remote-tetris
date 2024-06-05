@@ -1,8 +1,16 @@
 <script lang="ts">
+  import { createEventDispatcher } from "svelte";
+
   export let text: string = "Select";
+
+  const dispatch = createEventDispatcher();
+
+  const handleOnClick = () => {
+    dispatch("click");
+  };
 </script>
 
-<button class="button">{text}</button>
+<button class="button" on:click={handleOnClick}>{text}</button>
 
 <style>
   .button {
@@ -12,6 +20,8 @@
     font-weight: 900;
     cursor: pointer;
     padding: 0.75em 0em;
+    color: #ffffff;
+    width: 100%;
   }
 
   .button:hover {

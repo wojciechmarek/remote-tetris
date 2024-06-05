@@ -1,10 +1,9 @@
-@import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
-@import url("https://fonts.googleapis.com/css?family=VT323");
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
 
 :root {
-  /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
-  font-family: "Press Start 2P", "VT323";
-  line-height: 1.5;
+  font-family: "Bungee", sans-serif, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);

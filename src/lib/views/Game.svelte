@@ -1,38 +1,68 @@
 <script lang="ts">
-  import GameStart from "@components/game-start/GameStart.svelte";
+  import GameStartModal from "@components/modals/GameStartModal.svelte";
+  import PauseModal from "@components/modals/PauseModal.svelte";
+  import GameBoard from "@components/game-board/GameBoard.svelte";
   import backgroundImage from "@images/background.webp";
-  import Player from "../components/game-board/Canvas.svelte";
 
   import { v4 as uuidv4 } from "uuid";
 
+  // ------- controller url -------
   const url = "https://web-rtc-tetris.vercel.app/controller/";
-
   let qrCodeValue = `${url}${uuidv4()}`;
-  let isStartBannerVisible = true;
-  let isPlayerVisible = false;
 
+  // ---- web rtc communication ----
+  const peer = new RTCPeerConnection({
+    iceServers: [
+      {
+        urls: "stun:stun.l.google.com:19302", // This is a public STUN server provided by Google.
+      },
+    ],
+  });
+
+  // ------- boolean values -------
+  let isGameStartModalVisible = true;
+  let isPauseEnabled = false;
+
+  // ------ events handlers -------
   const onRefreshQrCodeClick = () => {
     qrCodeValue = `${url}${uuidv4()}`;
   };
 
   const onSelectKeyboardClick = () => {
-    //   isStartBannerVisible = false;
-    //   setTimeout(() => {
-    //     isPlayerVisible = true;
-    //   }, 1000);
+    isGameStartModalVisible = false;
+    isPauseEnabled = false;
+  };
+
+  const handleOnQuitClick = () => {
+    isGameStartModalVisible = true;
+  };
+
+  const handleOnResumeClick = () => {
+    isPauseEnabled = false;
+  };
+
+  const handleOnGamePause = () => {
+    isPauseEnabled = true;
   };
 </script>
 
 <div class="game__container">
   <img src={backgroundImage} class="game__background" alt="" />
   <div class="game__main-content">
-    <GameStart
-      {isStartBannerVisible}
-      {qrCodeValue}
-      on:refreshQrCodeClick={onRefreshQrCodeClick}
-      on:selectKeyboardClick={onSelectKeyboardClick}
-    />
-    <Player bind:isPlayerVisible />
+    {#if isGameStartModalVisible}
+      <GameStartModal
+        {qrCodeValue}
+        on:refreshQrCodeClick={onRefreshQrCodeClick}
+        on:selectWasdKeysClick={onSelectKeyboardClick}
+      />
+    {:else if isPauseEnabled}
+      <PauseModal
+        on:onQuitClick={handleOnQuitClick}
+        on:onResumeClick={handleOnResumeClick}
+      />
+    {:else}
+      <GameBoard on:gamePause={handleOnGamePause} />
+    {/if}
   </div>
 </div>
 
