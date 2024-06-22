@@ -1,4 +1,4 @@
-const { WebSocketServer } = require("ws");
+import { WebSocketServer } from "ws";
 
 let clients = [];
 
@@ -21,18 +21,15 @@ signalingServer.on("connection", (ws) => {
   });
 });
 
-module.exports = (req, res) => {
+export default async (req, res) => {
   if (req.method === "GET") {
     if (
       req.headers.upgrade &&
       req.headers.upgrade.toLowerCase() === "websocket"
     ) {
-      signalingServer.handleUpgrade(
-        req,
-        req.socket,
-        Buffer.alloc(0),
-        onConnect
-      );
+      signalingServer.handleUpgrade(req, req.socket, Buffer.alloc(0), (ws) => {
+        signalingServer.emit("connection", ws, req);
+      });
     } else {
       res.status(426).send("Upgrade required");
     }
@@ -40,7 +37,3 @@ module.exports = (req, res) => {
     res.status(405).send("Method Not Allowed");
   }
 };
-
-function onConnect(ws) {
-  signalingServer.emit("connection", ws);
-}
