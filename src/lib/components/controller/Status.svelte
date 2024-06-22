@@ -1,7 +1,7 @@
 <script lang="ts">
   export let connectedTo: string = "";
-  export let rows: number = "";
-  export let ping: number = "";
+  export let rows: number = 0;
+  export let ping: number = 0;
 </script>
 
 <div class="status__container">
@@ -58,7 +58,7 @@
   .status__text {
     font-size: 0.5rem;
     font-weight: 400;
-    color: #bbbbbb;
+    color: #cccccc;
     text-shadow: #000000 0 1px;
   }
 
