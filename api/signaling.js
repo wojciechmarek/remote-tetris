@@ -1,16 +1,18 @@
+import { createServer } from "http";
 import { WebSocketServer } from "ws";
+
+const server = createServer();
+const wss = new WebSocketServer({ server });
 
 let clients = [];
 
-const signalingServer = new WebSocketServer({ noServer: true });
-
-signalingServer.on("connection", (ws) => {
+wss.on("connection", (ws) => {
   clients.push(ws);
 
   ws.on("message", (message) => {
     const data = JSON.parse(message);
     clients.forEach((client) => {
-      if (client !== ws && client.readyState === client.OPEN) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(JSON.stringify(data));
       }
     });
@@ -21,19 +23,12 @@ signalingServer.on("connection", (ws) => {
   });
 });
 
-export default async (req, res) => {
-  if (req.method === "GET") {
-    if (
-      req.headers.upgrade &&
-      req.headers.upgrade.toLowerCase() === "websocket"
-    ) {
-      signalingServer.handleUpgrade(req, req.socket, Buffer.alloc(0), (ws) => {
-        signalingServer.emit("connection", ws, req);
-      });
-    } else {
-      res.status(426).send("Upgrade required");
-    }
-  } else {
-    res.status(405).send("Method Not Allowed");
-  }
-};
+server.on("request", (req, res) => {
+  res.writeHead(426, { "Content-Type": "text/plain" });
+  res.end("Upgrade required");
+});
+
+const port = process.env.PORT || 3000;
+server.listen(port, () => {
+  console.log(`WebSocket server is running on port ${port}`);
+});
