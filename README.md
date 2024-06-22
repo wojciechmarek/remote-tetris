@@ -1,10 +1,10 @@
-# Web RTC Tetris
+# WebRTC Tetris
 
-The Tetris game with remote game-pad support.
+The Tetris game with a remote game-pad support.
 
 ## Description
 
-The app's purpose is to learn the Svelte framework and Web RTC communication.
+The app's purpose is to learn the Svelte framework and WebRTC communication.
 
 ## Demo
 
@@ -30,11 +30,11 @@ A demo is available at [https://web-rtc-tetris.vercel.app](https://web-rtc-tetri
 
 ## Used technologies
 
-- 🎁 Repository: regular Git repository
-- 🧰 Frameworks: Svelte and Vite build system
-- 🛠️ Tools: not yet
-- 🎨 Styling: standard CSS
-- 💎 Others: desktop-first approach, web RTC communication
+- 🎁 Repository: regular Git repository,
+- 🧰 Frameworks: Svelte and Vite build system,
+- 🛠️ Tools: canvas,
+- 🎨 Styling: standard CSS,
+- 💎 Others: desktop-first approach, WebRTC communication.
 
 ## How to start
 
