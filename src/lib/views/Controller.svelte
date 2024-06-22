@@ -7,7 +7,7 @@
 </script>
 
 <div class="controller__container">
-  <Status {id} />
+  <Status connectedTo={id} ping={24} rows={34} />
   <div class="controller__nintendo">
     <Nintendo />
   </div>

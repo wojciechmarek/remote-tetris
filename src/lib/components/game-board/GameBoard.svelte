@@ -42,7 +42,7 @@
   }
 
   .game-board__stats {
-    background-color: #1e287d;
+    background-color: #52b5ee;
     display: flex;
     gap: 1em;
     padding: 1em 5em;

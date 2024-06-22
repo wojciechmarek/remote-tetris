@@ -1,20 +1,26 @@
 <script lang="ts">
-  export let id: string = "";
+  export let connectedTo: string = "";
+  export let rows: number = "";
+  export let ping: number = "";
 </script>
 
 <div class="status__container">
   <div class="status__row">
     <p class="status__text">
-      Connected to: <span class="status__dot" />123.126.34.11 / {id}
+      Connected to: <span class="status__dot" /><span class="status__span"
+        >123.126.34.11 / {connectedTo}</span
+      >
     </p>
   </div>
 
   <div class="status__row">
-    <p class="status__text">Your score: 23 rows</p>
+    <p class="status__text">
+      Your score: <span class="status__span">{rows} rows</span>
+    </p>
   </div>
 
   <div class="status__row">
-    <p class="status__text">Ping: 12ms</p>
+    <p class="status__text">Ping: <span class="status__span">{ping}ms</span></p>
   </div>
 </div>
 
@@ -28,7 +34,7 @@
     justify-content: center;
     align-items: start;
     top: 0;
-    padding: 3px 10px;
+    padding: 0.5em;
   }
 
   .status__row {
@@ -44,7 +50,6 @@
     height: 0.5rem;
     background-color: #00ff00;
     border-radius: 50%;
-    margin-bottom: 0.125em;
     margin-right: 0.5em;
     padding: 0;
     box-shadow: #000000 0 1px;
@@ -53,7 +58,11 @@
   .status__text {
     font-size: 0.5rem;
     font-weight: 400;
-    color: white;
+    color: #bbbbbb;
     text-shadow: #000000 0 1px;
+  }
+
+  .status__span {
+    color: #ffffff;
   }
 </style>
