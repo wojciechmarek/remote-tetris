@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebRTC Caller</title>
+  </head>
+  <body>
+    <h1>WebRTC Caller</h1>
+    <textarea
+      id="offer"
+      placeholder="Offer will be generated here..."
+      rows="10"
+      cols="50"
+    ></textarea>
+    <button id="startCall">Start Call</button>
+    <div id="status"></div>
+    <input type="text" id="messageInput" placeholder="Type a message" />
+    <button id="sendMessage">Send Message</button>
+    <div id="chatLog"></div>
+    <script src="../signalingServer.js"></script>
+    <script>
+      const peer = new RTCPeerConnection({
+        iceServers: [
+          {
+            urls: "stun:stun.l.google.com:19302",
+          },
+        ],
+      });
+
+      let dataChannel;
+
+      async function startCall() {
+        dataChannel = peer.createDataChannel("chat");
+        dataChannel.onopen = () => {
+          document.getElementById("status").innerText = "Data channel open!";
+        };
+        dataChannel.onmessage = (event) => {
+          document.getElementById("chatLog").innerText +=
+            "Peer: " + event.data + "\n";
+        };
+
+        const offer = await peer.createOffer();
+        await peer.setLocalDescription(offer);
+
+        document.getElementById("offer").value = JSON.stringify(offer);
+
+        // Simulate sending the offer to the callee
+        signalingServer.emit("offer", offer);
+      }
+
+      function sendMessage() {
+        const message = document.getElementById("messageInput").value;
+        dataChannel.send(message);
+        document.getElementById("chatLog").innerText +=
+          "You: " + message + "\n";
+        document.getElementById("messageInput").value = "";
+      }
+
+      document.getElementById("startCall").onclick = startCall;
+      document.getElementById("sendMessage").onclick = sendMessage;
+
+      peer.onicecandidate = (event) => {
+        if (event.candidate) {
+          console.log("New ICE candidate:", JSON.stringify(event.candidate));
+          // Simulate sending the ICE candidate to the callee
+          signalingServer.emit("candidate", event.candidate);
+        }
+      };
+
+      signalingServer.on("answer", async (answer) => {
+        await peer.setRemoteDescription(answer);
+      });
+    </script>
+  </body>
+</html>

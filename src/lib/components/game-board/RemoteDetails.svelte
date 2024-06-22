@@ -26,7 +26,7 @@
     </div>
   </div>
   <div class="remote-details__section flex_grow">
-    <div class="remote-details__row">Connected: {connectedTo}</div>
+    <div class="remote-details__row">Connected to: {connectedTo}</div>
     <div class="remote-details__row">Ping: {ping}ms</div>
   </div>
 </div>
