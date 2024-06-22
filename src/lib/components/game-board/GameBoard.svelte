@@ -2,14 +2,17 @@
   import { createEventDispatcher, onMount } from "svelte";
   import Canvas from "./Canvas.svelte";
   import Statistics from "./Statistics.svelte";
+  import RemoteDetails from "./RemoteDetails.svelte";
 
   const dispatch = createEventDispatcher();
 
   export let isPaused: boolean = true;
+  export let isRemoteController: boolean = false;
 
   let gameTimeInSeconds: number = -2;
   let level: number = 1;
   let target: number = 5;
+  let score: number = 0;
 
   $: {
     if (!isPaused) {
@@ -37,10 +40,12 @@
 
   const handleOnLineCompleted = () => {
     target--;
+    score += 10;
 
     if (target === 0) {
       level++;
       target = 4 + level;
+      score += 100;
     }
   };
 </script>
@@ -49,7 +54,7 @@
   class="game-board__container"
   style={isPaused ? "opacity: 0" : "opacity: 1"}
 >
-  <Statistics {gameTimeInSeconds} {target} {level} />
+  <Statistics {gameTimeInSeconds} {target} {level} {score} />
   <Canvas
     {isPaused}
     {level}
@@ -59,6 +64,9 @@
   />
   <p>Press ESCAPE to pause or quit</p>
 </div>
+{#if isRemoteController}
+  <RemoteDetails connectedTo="123.123.123.123" ping={34} />
+{/if}
 
 <style>
   .game-board__container {

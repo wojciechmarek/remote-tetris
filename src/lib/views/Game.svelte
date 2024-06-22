@@ -1,11 +1,11 @@
 <script lang="ts">
   import GameStartModal from "@components/modals/GameStartModal.svelte";
-  import PauseModal from "@components/modals/GameOverModal.svelte";
+  import PauseModal from "@components/modals/PauseModal.svelte";
+  import GameOverModal from "@components/modals/GameOverModal.svelte";
   import GameBoard from "@components/game-board/GameBoard.svelte";
   import backgroundImage from "@images/background.webp";
 
   import { v4 as uuidv4 } from "uuid";
-  import GameOverModal from "@components/modals/GameOverModal.svelte";
 
   // ------- controller url -------
   const url = "https://web-rtc-tetris.vercel.app/controller/";
@@ -25,6 +25,7 @@
   let isGameBoardVisible = false;
   let isPaused = false;
   let isGameOver = false;
+  let isRemoteController = false;
 
   // ------ events handlers -------
   const handleOnRefreshQrCodeClick = () => {
@@ -36,6 +37,8 @@
     isGameBoardVisible = true;
     isPaused = false;
     isGameOver = false;
+
+    isRemoteController = true;
   };
 
   const handleOnQuitClick = () => {
@@ -53,6 +56,8 @@
   };
 
   const handleOnGamePause = () => {
+    console.log("asdasdasd");
+
     isGameStartModalVisible = false;
     isGameBoardVisible = true;
     isPaused = true;
@@ -85,6 +90,7 @@
     {#if isGameBoardVisible}
       <GameBoard
         {isPaused}
+        {isRemoteController}
         on:gamePause={handleOnGamePause}
         on:gameOver={handleOnGameOver}
       />
