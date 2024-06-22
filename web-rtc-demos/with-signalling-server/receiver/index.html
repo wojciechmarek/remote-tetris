@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebRTC Callee</title>
+  </head>
+  <body>
+    <h1>WebRTC Callee</h1>
+    <div id="calleeStatus"></div>
+    <input type="text" id="calleeMessageInput" placeholder="Type a message" />
+    <button id="calleeSendMessage">Send Message</button>
+    <div id="calleeChatLog"></div>
+    <script>
+      const ws = new WebSocket("wss://web-rtc-tetris.vercel.app/api/signaling");
+
+      const calleePeer = new RTCPeerConnection({
+        iceServers: [
+          {
+            urls: "stun:stun.l.google.com:19302",
+          },
+        ],
+      });
+
+      let calleeDataChannel;
+
+      function sendCalleeMessage() {
+        const message = document.getElementById("calleeMessageInput").value;
+        calleeDataChannel.send(message);
+        document.getElementById("calleeChatLog").innerText +=
+          "You: " + message + "\n";
+        document.getElementById("calleeMessageInput").value = "";
+      }
+
+      document.getElementById("calleeSendMessage").onclick = sendCalleeMessage;
+
+      calleePeer.onicecandidate = (event) => {
+        if (event.candidate) {
+          ws.send(JSON.stringify({ type: "candidate", data: event.candidate }));
+        }
+      };
+
+      calleePeer.ondatachannel = (event) => {
+        calleeDataChannel = event.channel;
+        calleeDataChannel.onopen = () => {
+          document.getElementById("calleeStatus").innerText =
+            "Data channel open!";
+        };
+        calleeDataChannel.onmessage = (event) => {
+          document.getElementById("calleeChatLog").innerText +=
+            "Peer: " + event.data + "\n";
+        };
+      };
+
+      ws.onmessage = async (message) => {
+        const { type, data } = JSON.parse(message.data);
+
+        if (type === "offer") {
+          await calleePeer.setRemoteDescription(data);
+          const answer = await calleePeer.createAnswer();
+          await calleePeer.setLocalDescription(answer);
+          ws.send(JSON.stringify({ type: "answer", data: answer }));
+        } else if (type === "candidate") {
+          const candidate = new RTCIceCandidate(data);
+          await calleePeer.addIceCandidate(candidate);
+        }
+      };
+    </script>
+  </body>
+</html>

@@ -23,6 +23,7 @@
     "@vercel/analytics": "^1.1.1",
     "svelte-navigator": "^3.2.2",
     "svelte-qrcode": "^1.0.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "ws": "^8.17.1"
   }
 }
