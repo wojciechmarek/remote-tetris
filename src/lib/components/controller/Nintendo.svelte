@@ -1,7 +1,16 @@
 <script lang="ts">
   import controllerImage from "@images/nintendo.webp";
+  import { createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
 
   const handleKeyDownPress = (id: string) => {
+    switch (id) {
+      case "b":
+        dispatch("showStatsBar");
+        break;
+    }
+
     navigator.vibrate(50);
   };
 </script>

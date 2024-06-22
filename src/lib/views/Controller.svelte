@@ -4,12 +4,25 @@
   import Warning from "../components/controller/Warning.svelte";
 
   export let id: string;
+
+  let isStatsBarVisible = true;
+
+  const handleOnStatsBarVisibleChange = () => {
+    if (isStatsBarVisible) {
+      isStatsBarVisible = false;
+      return;
+    }
+
+    isStatsBarVisible = true;
+  };
 </script>
 
 <div class="controller__container">
-  <Status connectedTo={id} ping={24} rows={34} />
+  {#if isStatsBarVisible}
+    <Status connectedTo={id} ping={24} rows={34} />
+  {/if}
   <div class="controller__nintendo">
-    <Nintendo />
+    <Nintendo on:showStatsBar={handleOnStatsBarVisibleChange} />
   </div>
   <div class="controller__orientation-warning">
     <Warning />
