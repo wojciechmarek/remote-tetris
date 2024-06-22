@@ -1,10 +1,11 @@
 <script lang="ts">
   import GameStartModal from "@components/modals/GameStartModal.svelte";
-  import PauseModal from "@components/modals/PauseModal.svelte";
+  import PauseModal from "@components/modals/GameOverModal.svelte";
   import GameBoard from "@components/game-board/GameBoard.svelte";
   import backgroundImage from "@images/background.webp";
 
   import { v4 as uuidv4 } from "uuid";
+  import GameOverModal from "@components/modals/GameOverModal.svelte";
 
   // ------- controller url -------
   const url = "https://web-rtc-tetris.vercel.app/controller/";
@@ -21,28 +22,52 @@
 
   // ------- boolean values -------
   let isGameStartModalVisible = true;
-  let isPauseEnabled = false;
+  let isGameBoardVisible = false;
+  let isPaused = false;
+  let isGameOver = false;
 
   // ------ events handlers -------
-  const onRefreshQrCodeClick = () => {
+  const handleOnRefreshQrCodeClick = () => {
     qrCodeValue = `${url}${uuidv4()}`;
   };
 
-  const onSelectKeyboardClick = () => {
+  const handleOnSelectKeyboardClick = () => {
     isGameStartModalVisible = false;
-    isPauseEnabled = false;
+    isGameBoardVisible = true;
+    isPaused = false;
+    isGameOver = false;
   };
 
   const handleOnQuitClick = () => {
     isGameStartModalVisible = true;
+    isGameBoardVisible = false;
+    isPaused = false;
+    isGameOver = false;
   };
 
   const handleOnResumeClick = () => {
-    isPauseEnabled = false;
+    isGameStartModalVisible = false;
+    isGameBoardVisible = true;
+    isPaused = false;
+    isGameOver = false;
   };
 
   const handleOnGamePause = () => {
-    isPauseEnabled = true;
+    isGameStartModalVisible = false;
+    isGameBoardVisible = true;
+    isPaused = true;
+    isGameOver = false;
+  };
+
+  const handleOnGameOver = () => {
+    isGameStartModalVisible = false;
+    isGameBoardVisible = false;
+    isPaused = true;
+    isGameOver = true;
+  };
+
+  const handleOnNewGameClick = () => {
+    handleOnSelectKeyboardClick();
   };
 </script>
 
@@ -52,16 +77,31 @@
     {#if isGameStartModalVisible}
       <GameStartModal
         {qrCodeValue}
-        on:refreshQrCodeClick={onRefreshQrCodeClick}
-        on:selectWasdKeysClick={onSelectKeyboardClick}
+        on:refreshQrCodeClick={handleOnRefreshQrCodeClick}
+        on:selectWasdKeysClick={handleOnSelectKeyboardClick}
       />
-    {:else if isPauseEnabled}
+    {/if}
+
+    {#if isGameBoardVisible}
+      <GameBoard
+        {isPaused}
+        on:gamePause={handleOnGamePause}
+        on:gameOver={handleOnGameOver}
+      />
+    {/if}
+
+    {#if isPaused}
       <PauseModal
         on:onQuitClick={handleOnQuitClick}
         on:onResumeClick={handleOnResumeClick}
       />
-    {:else}
-      <GameBoard on:gamePause={handleOnGamePause} />
+    {/if}
+
+    {#if isGameOver}
+      <GameOverModal
+        on:onQuitClick={handleOnQuitClick}
+        on:onNewGameClick={handleOnNewGameClick}
+      />
     {/if}
   </div>
 </div>

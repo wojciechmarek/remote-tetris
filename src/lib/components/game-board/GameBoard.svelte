@@ -1,34 +1,62 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
-  import Frame from "../common/Frame.svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import Canvas from "./Canvas.svelte";
+  import Statistics from "./Statistics.svelte";
 
   const dispatch = createEventDispatcher();
 
-  export let isGameBoardVisible: boolean = false;
+  export let isPaused: boolean = true;
 
-  const onKeyDown = (e: KeyboardEvent) => {
-    switch (e.code) {
-      case "Escape":
-        pauseTheGame();
-        break;
+  let gameTimeInSeconds: number = -2;
+  let level: number = 1;
+  let target: number = 5;
+
+  $: {
+    if (!isPaused) {
+      startTimeCounter();
     }
+  }
+
+  onMount(() => {
+    startTimeCounter();
+  });
+
+  let timeoutId: number;
+
+  const startTimeCounter = () => {
+    clearTimeout(timeoutId);
+
+    if (isPaused) {
+      return;
+    }
+
+    gameTimeInSeconds++;
+
+    timeoutId = setTimeout(startTimeCounter, 1000);
   };
 
-  const pauseTheGame = () => {
-    dispatch("gamePause");
+  const handleOnLineCompleted = () => {
+    target--;
+
+    if (target === 0) {
+      level++;
+      target = 4 + level;
+    }
   };
 </script>
 
-<svelte:window on:keydown|preventDefault={onKeyDown} />
-<div class="game-board__container">
-  <div class="game-board__stats">
-    <Frame title={"Time"}>1:23</Frame>
-    <Frame title={"Level"}>3</Frame>
-    <Frame title={"Target"}>Clear 10 lines</Frame>
-    <Frame title={"Ping"}>23 ms</Frame>
-  </div>
-  <Canvas />
+<div
+  class="game-board__container"
+  style={isPaused ? "opacity: 0" : "opacity: 1"}
+>
+  <Statistics {gameTimeInSeconds} {target} {level} />
+  <Canvas
+    {isPaused}
+    {level}
+    on:pauseGame={() => dispatch("gamePause")}
+    on:lineCompleted={handleOnLineCompleted}
+    on:gameOver={() => dispatch("gameOver")}
+  />
   <p>Press ESCAPE to pause or quit</p>
 </div>
 
@@ -39,12 +67,5 @@
     justify-items: center;
     height: 100%;
     gap: 1em;
-  }
-
-  .game-board__stats {
-    background-color: #52b5ee;
-    display: flex;
-    gap: 1em;
-    padding: 1em 5em;
   }
 </style>

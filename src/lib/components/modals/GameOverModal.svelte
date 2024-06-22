@@ -2,39 +2,31 @@
   import { createEventDispatcher } from "svelte";
   import Button from "../common/Button.svelte";
 
-  export let isPauseModalVisible: boolean = false;
-
   const dispatch = createEventDispatcher();
 
   const handleOnResumeClick = () => {
-    dispatch("onResumeClick");
+    dispatch("onNewGameClick");
   };
 
   const handleOnQuitClick = () => {
     dispatch("onQuitClick");
   };
-
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (e.code === "Escape") {
-      dispatch("onResumeClick");
-    }
-  };
 </script>
 
-<svelte:window on:keydown|preventDefault={onKeyDown} />
-<div class="pause__container">
-  <div class="pause__modal">
-    <h2 class="pause__title">Pause</h2>
-    <p>Resume or quit the game.</p>
-    <div class="pause__buttons-containers">
-      <Button text="Resume" on:click={handleOnResumeClick} />
+<div class="new-game__container">
+  <div class="new-game__modal">
+    <h2 class="new-game__title">Game over</h2>
+    <p>Start a new game or quit.</p>
+    <div class="new-game__buttons-containers">
+      <Button text="New Game" on:click={handleOnResumeClick} />
       <Button text="Quit" on:click={handleOnQuitClick} />
     </div>
   </div>
 </div>
 
 <style>
-  .pause__container {
+  .new-game__container {
+    z-index: 1;
     position: absolute;
     top: 0;
     left: 0;
@@ -46,7 +38,7 @@
     justify-items: center;
   }
 
-  .pause__modal {
+  .new-game__modal {
     background-color: #284fe6;
     border: 0.25em solid #1e287d;
     padding: 1.5em;
@@ -55,7 +47,7 @@
     gap: 1em;
   }
 
-  .pause__buttons-containers {
+  .new-game__buttons-containers {
     margin-top: 1em;
     display: flex;
     gap: 1em;

@@ -12,8 +12,21 @@ A demo is available at [https://web-rtc-tetris.vercel.app](https://web-rtc-tetri
 
 ## Screenshots
 
-Not ready yet.
-<!-- ![Screenshot 1](./screenshots/landing.webp) -->
+### Landing page
+
+![landing-page](./screenshots/landing-page.webp)
+
+### Game play
+
+![game-play](./screenshots/gameplay.webp)
+
+### Game over
+
+![game-over](./screenshots/game-over.webp)
+
+### Remote controller
+
+![remote-controller](./screenshots/remote-controller.webp)
 
 ## Used technologies
 
