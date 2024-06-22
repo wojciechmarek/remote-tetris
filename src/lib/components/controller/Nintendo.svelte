@@ -35,6 +35,7 @@
       <g id="buttons">
         <path
           on:keydown={() => handleKeyDownPress("up")}
+          on:click={() => handleKeyDownPress("up")}
           id="up"
           d="M234.852 231.079 L306.705 231.079 306.705 159.227 234.852 159.227 Z"
           fill="transparent"
@@ -77,6 +78,7 @@
         />
         <path
           on:keydown={() => handleKeyDownPress("b")}
+          on:click={() => handleKeyDownPress("b")}
           id="b"
           d="M1026.226 357.818 C1026.226 330.261 1003.886 307.921 976.328 307.921 948.771 307.921 926.431 330.261 926.431 357.818 926.431 385.376 948.771 407.716 976.328 407.716 1003.886 407.716 1026.226 385.376 1026.226 357.818 Z"
           fill="transparent"
