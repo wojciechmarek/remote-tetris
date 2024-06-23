@@ -1,1 +1,1 @@
-export const names: string[] = [];
+export const names: string[] = ["Steve"];
