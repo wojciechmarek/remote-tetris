@@ -13,7 +13,7 @@ const socketIO = require("socket.io");
 //a new Socket.IO server instance is created by passing the server instance to the socketIO() function and assigning it to the constant io.
 const io = socketIO(server, {
   cors: {
-    origin: "*",
+    origin: "https://web-rtc-tetris.vercel.app",
     methods: ["GET", "POST"],
   },
 });
