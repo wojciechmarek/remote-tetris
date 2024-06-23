@@ -1,10 +1,18 @@
-const names: string[] = ["Steve"];
+import { offers } from "./_database";
+import { Offer } from "./_types";
 
 export async function POST(request: Request) {
   const json = await request.json();
-  return new Response(`POST body test: ${JSON.stringify(json)}}`);
+
+  const newOffer = JSON.parse(json) as Offer;
+  newOffer.dateGenerated = Date.now();
+  offers.push(newOffer);
+
+  return new Response(`Offer created: ${JSON.stringify(json)}}`);
 }
 
 export function GET(request: Request) {
-  return new Response(`GET url test: ${request.url}`);
+  const id = request.url.split("?id=")[1] as string;
+
+  return new Response(`GET from id=${id}: ${request.url}`);
 }
