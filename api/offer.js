@@ -4,7 +4,8 @@
 export async function POST(request) {
   const json = await request.json();
 
-  const newOffer = JSON.parse(json);
+  const jsonString = JSON.stringify(json);
+  const newOffer = JSON.parse(jsonString);
   newOffer.dateGenerated = Date.now();
   offers.push(newOffer);
 
