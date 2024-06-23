@@ -1,7 +1,7 @@
-const { offers } = require("./_database.ts");
-const { Offer } = require("./_types.ts");
+// const { offers } = require("./_database.ts");
+// const { Offer } = require("./_types.ts");
 
-export async function POST(request: Request) {
+export async function POST(request) {
   const json = await request.json();
 
   const newOffer = JSON.parse(json);
@@ -11,8 +11,8 @@ export async function POST(request: Request) {
   return new Response(`Offer created: ${JSON.stringify(json)}}`);
 }
 
-export function GET(request: Request) {
-  const id = request.url.split("?id=")[1] as string;
+export function GET(request) {
+  const id = request.url.split("?id=")[1];
 
   return new Response(`GET from id=${id}: ${request.url}`);
 }
