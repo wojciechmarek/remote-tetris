@@ -1,14 +1,10 @@
-import { offers } from "./_database.ts";
-import { Offer } from "./_types.ts";
-
-export const config = {
-  runtime: "nodejs",
-};
+const { offers } = require("./_database.ts");
+const { Offer } = require("./_types.ts");
 
 export async function POST(request: Request) {
   const json = await request.json();
 
-  const newOffer = JSON.parse(json) as Offer;
+  const newOffer = JSON.parse(json);
   newOffer.dateGenerated = Date.now();
   offers.push(newOffer);
 
