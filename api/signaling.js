@@ -1,34 +1,16 @@
-import { createServer } from "http";
-import { WebSocketServer } from "ws";
+import WebSocket from "ws";
 
-const server = createServer();
-const wss = new WebSocketServer({ server });
+const server = new WebSocket.Server({ port: 8080 });
 
-let clients = [];
-
-wss.on("connection", (ws) => {
-  clients.push(ws);
-
-  ws.on("message", (message) => {
-    const data = JSON.parse(message);
-    clients.forEach((client) => {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify(data));
+server.on("connection", (socket) => {
+  socket.on("message", (message) => {
+    // Broadcast the message to all connected clients
+    server.clients.forEach((client) => {
+      if (client !== socket && client.readyState === WebSocket.OPEN) {
+        client.send(message);
       }
     });
   });
-
-  ws.on("close", () => {
-    clients = clients.filter((client) => client !== ws);
-  });
 });
 
-server.on("request", (req, res) => {
-  res.writeHead(426, { "Content-Type": "text/plain" });
-  res.end("Upgrade required");
-});
-
-const port = process.env.PORT || 3000;
-server.listen(port, () => {
-  console.log(`WebSocket server is running on port ${port}`);
-});
+console.log("Signaling server running on ws://localhost:8080");
