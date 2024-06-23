@@ -1,5 +1,9 @@
-import { offers } from "./_database";
-import { Offer } from "./_types";
+import { offers } from "./_database.ts";
+import { Offer } from "./_types.ts";
+
+export const config = {
+  runtime: "nodejs",
+};
 
 export async function POST(request: Request) {
   const json = await request.json();
