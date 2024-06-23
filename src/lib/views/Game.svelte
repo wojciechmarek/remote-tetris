@@ -78,7 +78,7 @@
   };
 
   let value = "test";
-  const socket = io("https://web-rtc-tetris-api.vercel.app");
+  const socket = io();
   onMount(async () => {
     socket.on("connect", () => {
       console.log(socket.connected); // true
