@@ -1,7 +1,8 @@
 const names: string[] = ["Steve"];
 
-export function POST(request: Request) {
-  return new Response(`POST body test: ${request.json}`);
+export async function POST(request: Request) {
+  const json = await request.json;
+  return new Response(`POST body test: ${json}`);
 }
 
 export function GET(request: Request) {
