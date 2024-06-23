@@ -80,15 +80,15 @@
   let value = "test";
   const socket = io();
   onMount(async () => {
-    socket.on("connect", () => {
-      console.log(socket.connected); // true
-    });
+    // socket.on("connect", () => {
+    //   console.log(socket.connected); // true
+    // });
 
-    socket.on("disconnect", () => {
-      console.log(socket.connected); // false
-    });
+    // socket.on("disconnect", () => {
+    //   console.log(socket.connected); // false
+    // });
 
-    const result = await fetch("https://web-rtc-tetris-api.vercel.app/hello", {
+    const result = await fetch("https://web-rtc-tetris.vercel.app/hello", {
       method: "GET",
     });
     console.log(result);

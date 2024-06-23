@@ -1,25 +1,15 @@
-//implementation of socket.io along with the ws library for the shared purpose of managing WebSockets in express js
-//
-
 const cors = require("cors");
-
-//import the Express.js library and assigns it to the constant express.
 const express = require("express");
-
-// imports the built-in http module in Node.js.
 const http = require("http");
-
-//imports the Socket.IO library and assigns it to the constant socketIO.
-const socketIO = require("socket.io");
 
 //an instance of the Express.js application is created and assigned to the constant
 const app = express();
-
 app.use(cors());
 
-//an instance of the HTTP server is created by passing the app instance to the createServer() method of the http module and assigning it to the constant server.
 const server = http.createServer(app);
 
+//imports the Socket.IO library and assigns it to the constant socketIO.
+const socketIO = require("socket.io");
 //a new Socket.IO server instance is created by passing the server instance to the socketIO() function and assigning it to the constant io.
 const io = socketIO(server, {
   cors: {
@@ -48,6 +38,6 @@ app.get("/hello", function (req, res, next) {
   res.send(JSON.stringify(message));
 });
 
-server.listen(3000, () => {
-  console.log("Server listening on port 3000");
+server.listen(80, () => {
+  console.log("Server listening on port 80");
 });
