@@ -42,7 +42,7 @@
 //   console.log("Server listening on port 80");
 // });
 
-import express from 'express'
+const express = require("express");
 const app = express();
 
 app.get("/hello", (req, res) => res.send("Express on Vercel"));
