@@ -4,8 +4,10 @@
   import GameOverModal from "@components/modals/GameOverModal.svelte";
   import GameBoard from "@components/game-board/GameBoard.svelte";
   import backgroundImage from "@images/background.webp";
+  import { io } from "socket.io-client";
 
   import { v4 as uuidv4 } from "uuid";
+  import { onMount } from "svelte";
 
   // ------- controller url -------
   const url = "https://web-rtc-tetris.vercel.app/controller/";
@@ -74,11 +76,31 @@
   const handleOnNewGameClick = () => {
     handleOnSelectKeyboardClick();
   };
+
+  let value = "test";
+  const socket = io("https://web-rtc-tetris-api.vercel.app");
+  onMount(async () => {
+    socket.on("connect", () => {
+      console.log(socket.connected); // true
+    });
+
+    socket.on("disconnect", () => {
+      console.log(socket.connected); // false
+    });
+
+    const result = await fetch("https://web-rtc-tetris-api.vercel.app/hello", {
+      method: "GET",
+    });
+    console.log(result);
+
+    value = await result.json();
+  });
 </script>
 
 <div class="game__container">
   <img src={backgroundImage} class="game__background" alt="" />
   <div class="game__main-content">
+    <p>{value}</p>
     {#if isGameStartModalVisible}
       <GameStartModal
         {qrCodeValue}
