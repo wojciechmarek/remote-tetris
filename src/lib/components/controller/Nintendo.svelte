@@ -5,12 +5,7 @@
   const dispatch = createEventDispatcher();
 
   const handleKeyDownPress = (id: string) => {
-    switch (id) {
-      case "b":
-        dispatch("showStatsBar");
-        break;
-    }
-
+    dispatch("buttonPress", id);
     navigator.vibrate(50);
   };
 </script>

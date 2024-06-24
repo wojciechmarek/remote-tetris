@@ -24,7 +24,7 @@
     startTimeCounter();
   });
 
-  let timeoutId: number;
+  let timeoutId;
 
   const startTimeCounter = () => {
     clearTimeout(timeoutId);

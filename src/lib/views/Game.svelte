@@ -5,22 +5,10 @@
   import GameBoard from "@components/game-board/GameBoard.svelte";
   import backgroundImage from "@images/background.webp";
   import { io } from "socket.io-client";
+  import { url, server } from "../config";
 
   import { v4 as uuidv4 } from "uuid";
   import { onMount } from "svelte";
-
-  // ------- controller url -------
-  const url = "https://web-rtc-tetris.vercel.app/controller/";
-  let qrCodeValue = `${url}${uuidv4()}`;
-
-  // ---- web rtc communication ----
-  const peer = new RTCPeerConnection({
-    iceServers: [
-      {
-        urls: "stun:stun.l.google.com:19302", // This is a public STUN server provided by Google.
-      },
-    ],
-  });
 
   // ------- boolean values -------
   let isGameStartModalVisible = true;
@@ -29,9 +17,26 @@
   let isGameOver = false;
   let isRemoteController = false;
 
+  let id;
+  let qrCodeValue;
+
+  const generateNewIdAndNewQrCodeLink = () => {
+    id = uuidv4();
+    qrCodeValue = `${url}/${id}`;
+  };
+
+  export const peer = new RTCPeerConnection({
+    iceServers: [
+      {
+        urls: "stun:stun.l.google.com:19302"
+      }
+    ]
+  });
+
   // ------ events handlers -------
-  const handleOnRefreshQrCodeClick = () => {
-    qrCodeValue = `${url}${uuidv4()}`;
+  const handleOnRefreshQrCodeClick = async () => {
+    generateNewIdAndNewQrCodeLink();
+    await sendOfferAndIceCandidatesToServer();
   };
 
   const handleOnSelectKeyboardClick = () => {
@@ -58,8 +63,6 @@
   };
 
   const handleOnGamePause = () => {
-    console.log("asdasdasd");
-
     isGameStartModalVisible = false;
     isGameBoardVisible = true;
     isPaused = true;
@@ -77,30 +80,97 @@
     handleOnSelectKeyboardClick();
   };
 
-  let value = "test";
-  const socket = io();
-  onMount(async () => {
-    // socket.on("connect", () => {
-    //   console.log(socket.connected); // true
-    // });
+  let status = "is open ?";
+  let dataChannel;
 
-    // socket.on("disconnect", () => {
-    //   console.log(socket.connected); // false
-    // });
+  // ------ web rtc -------
 
-    const result = await fetch("https://web-rtc-tetris.vercel.app/hello", {
-      method: "GET",
+  let offer: RTCSessionDescriptionInit;
+
+  const configurePeer = async () => {
+    dataChannel = peer.createDataChannel("chat");
+    dataChannel.onopen = () => {
+      status = "Data channel CHAT open!";
+    };
+    dataChannel.onmessage = (event) => {
+      status = "Peer message: " + event.data;
+    };
+
+    offer = await peer.createOffer();
+    await peer.setLocalDescription(offer);
+  };
+
+  const sendOfferAndIceCandidatesToServer = async () => {
+    const payload = JSON.stringify({
+      id,
+      offer,
+      iceCandidates
     });
-    console.log(result);
 
-    value = await result.json();
+    socket.emit("offerAndIceCandidates", payload);
+  };
+
+  peer.ondatachannel = (event) => {
+    const receiveChannel = event.channel;
+    receiveChannel.onopen = () => {
+      status = "Data channel open!";
+    };
+    receiveChannel.onmessage = (event) => {
+      status = "Peer: " + event.data;
+    };
+  };
+
+  const iceCandidates: RTCIceCandidate[] = [];
+
+  peer.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
+    if (event.candidate) {
+      iceCandidates.push(event.candidate);
+    }
+  };
+
+  peer.onconnectionstatechange = function (event: Event) {
+    status = JSON.stringify(peer);
+    if (peer.connectionState === "connected") {
+      status = "Connected!!!!";
+    }
+  };
+
+  let value = "is connected ?";
+  const socket = io(server);
+
+  // ---- web socket.io -----
+  const registerTheCallbackAnswerFromServer = () => {
+    socket.on("answer", async (result) => {
+      status = JSON.stringify(result);
+
+      const asd = new RTCSessionDescription(result.answer);
+
+      await peer.setRemoteDescription(asd);
+      const ices = result.iceCandidates;
+      ices.forEach(async (item) => {
+        await peer.addIceCandidate(item);
+      });
+
+      //handleOnSelectKeyboardClick();
+    });
+  };
+
+  // ------ on mount --------
+  onMount(async () => {
+    generateNewIdAndNewQrCodeLink();
+    await configurePeer();
+    registerTheCallbackAnswerFromServer();
+
+    setTimeout(async () => {
+      await sendOfferAndIceCandidatesToServer();
+    }, 100);
   });
 </script>
 
 <div class="game__container">
   <img src={backgroundImage} class="game__background" alt="" />
   <div class="game__main-content">
-    <p>{value}</p>
+    <p>{status}</p>
     {#if isGameStartModalVisible}
       <GameStartModal
         {qrCodeValue}

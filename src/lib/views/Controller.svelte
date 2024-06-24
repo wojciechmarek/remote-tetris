@@ -1,7 +1,17 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import Nintendo from "../components/controller/Nintendo.svelte";
   import Status from "../components/controller/Status.svelte";
   import Warning from "../components/controller/Warning.svelte";
+  import { server } from "../config";
+
+  export const peer = new RTCPeerConnection({
+    iceServers: [
+      {
+        urls: "stun:stun.l.google.com:19302"
+      }
+    ]
+  });
 
   export let id: string;
 
@@ -15,14 +25,103 @@
 
     isStatsBarVisible = true;
   };
+
+  const getOfferAndIceCandidatesByIdFromTheServer = async () => {
+    const data = await fetch(`${server}/offer/${id}`, {
+      method: "GET"
+    });
+
+    const result = await data.json();
+    return result;
+  };
+
+  const setOfferToWebRCTPeer = async (offer: RTCSessionDescriptionInit) => {
+    await peer.setRemoteDescription(offer);
+  };
+
+  const setIceCandidatesToWebRCTPeer = async (ices: RTCIceCandidateInit[]) => {
+    ices.forEach(async (item) => {
+      await peer.addIceCandidate(item);
+    });
+  };
+
+  const generateTheAnswer = async () => {
+    const answer = await peer.createAnswer();
+    await peer.setLocalDescription(answer);
+    return answer;
+  };
+
+  const postTheAnswerAndIceCandidatesToTheServer = async (
+    id: string,
+    answer: RTCSessionDescriptionInit
+  ) => {
+    const payload = { answer, iceCandidates };
+    console.warn(payload);
+
+    await fetch(`${server}/answer/${id}`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+  };
+
+  onMount(async () => {
+    const result = await getOfferAndIceCandidatesByIdFromTheServer();
+    await setOfferToWebRCTPeer(result.offer);
+    await setIceCandidatesToWebRCTPeer(result.iceCandidates);
+    const answer = await generateTheAnswer();
+
+    setTimeout(async () => {
+      await postTheAnswerAndIceCandidatesToTheServer(id, answer);
+    }, 1000);
+  });
+
+  let dataChannel: RTCDataChannel;
+  let status;
+  peer.ondatachannel = (event) => {
+    dataChannel = event.channel;
+    dataChannel.onopen = () => {
+      status = "Data channel open!";
+    };
+    dataChannel.onmessage = (event) => {
+      status = event.data;
+    };
+  };
+
+  const iceCandidates: RTCIceCandidate[] = [];
+
+  peer.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
+    if (event.candidate) {
+      iceCandidates.push(event.candidate);
+    }
+  };
+
+  peer.onconnectionstatechange = function (event) {
+    console.log("asdasdasd");
+    if (peer.connectionState === "connected") {
+      button = JSON.stringify(peer);
+    }
+  };
+
+  let button;
+  const handleOnButtonPress = (event: CustomEvent) => {
+    console.log(event.detail);
+
+    button = event.detail;
+    if (dataChannel) {
+      dataChannel.send(event.detail);
+    }
+  };
 </script>
 
 <div class="controller__container">
-  {#if isStatsBarVisible}
-    <Status connectedTo={id} ping={24} rows={34} />
-  {/if}
+  <!-- <Status connectedTo={"asd"} ping={24} rows={34} /> -->
+  <p style="background-color: red;">{status}</p>
+  <p style="background-color: red;">button: {button}</p>
   <div class="controller__nintendo">
-    <Nintendo on:showStatsBar={handleOnStatsBarVisibleChange} />
+    <Nintendo on:buttonPress={handleOnButtonPress} />
   </div>
   <div class="controller__orientation-warning">
     <Warning />
