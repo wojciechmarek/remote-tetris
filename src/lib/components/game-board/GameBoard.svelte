@@ -8,6 +8,7 @@
 
   export let isPaused: boolean = true;
   export let isRemoteController: boolean = false;
+  export let buttonId: string = "";
 
   let gameTimeInSeconds: number = -2;
   let level: number = 1;
@@ -56,6 +57,7 @@
 >
   <Statistics {gameTimeInSeconds} {target} {level} {score} />
   <Canvas
+    {buttonId}
     {isPaused}
     {level}
     on:pauseGame={() => dispatch("gamePause")}

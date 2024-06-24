@@ -80,8 +80,9 @@
     handleOnSelectKeyboardClick();
   };
 
-  let status = "is open ?";
-  let dataChannel;
+  let status = "";
+  let dataChannel: RTCDataChannel;
+  let buttonId: string;
 
   // ------ web rtc -------
 
@@ -90,10 +91,14 @@
   const configurePeer = async () => {
     dataChannel = peer.createDataChannel("chat");
     dataChannel.onopen = () => {
-      status = "Data channel CHAT open!";
+      status = "Data channel open!";
     };
     dataChannel.onmessage = (event) => {
-      status = "Peer message: " + event.data;
+      status = "Pressed button: " + event.data;
+      buttonId = event.data;
+      setTimeout(() => {
+        buttonId = "";
+      }, 50);
     };
 
     offer = await peer.createOffer();
@@ -116,7 +121,11 @@
       status = "Data channel open!";
     };
     receiveChannel.onmessage = (event) => {
-      status = "Peer: " + event.data;
+      status = "Pressed button: " + event.data;
+      buttonId = event.data;
+      setTimeout(() => {
+        buttonId = "";
+      }, 50);
     };
   };
 
@@ -129,7 +138,6 @@
   };
 
   peer.onconnectionstatechange = function (event: Event) {
-    status = JSON.stringify(peer);
     if (peer.connectionState === "connected") {
       status = "Connected!!!!";
     }
@@ -141,8 +149,6 @@
   // ---- web socket.io -----
   const registerTheCallbackAnswerFromServer = () => {
     socket.on("answer", async (result) => {
-      status = JSON.stringify(result);
-
       const asd = new RTCSessionDescription(result.answer);
 
       await peer.setRemoteDescription(asd);
@@ -183,6 +189,7 @@
       <GameBoard
         {isPaused}
         {isRemoteController}
+        {buttonId}
         on:gamePause={handleOnGamePause}
         on:gameOver={handleOnGameOver}
       />

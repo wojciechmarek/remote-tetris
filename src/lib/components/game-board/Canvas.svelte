@@ -9,13 +9,34 @@
 
   export let isPaused: boolean = true;
   export let level: number = 1;
+  export let buttonId: string = "";
 
   $: {
     if (!isPaused) {
       gameLoop();
     }
-    // minutes = Math.floor(gameTimeInSeconds / 60);
-    // seconds = gameTimeInSeconds % 60;
+
+    switch (buttonId) {
+      // case "start":
+      // dispatch("pauseGame");
+      // break;
+      case "left":
+        movePiece(-1, 0);
+        gameLoop(true);
+        break;
+      case "right":
+        movePiece(1, 0);
+        gameLoop(true);
+        break;
+      case "down":
+        movePiece(0, 1);
+        gameLoop(true);
+        break;
+      case "up" || "b":
+        rotatePiece();
+        gameLoop(true);
+        break;
+    }
   }
 
   const ROWS = 20;
@@ -48,13 +69,13 @@
             col * BLOCK_SIZE,
             row * BLOCK_SIZE,
             BLOCK_SIZE,
-            BLOCK_SIZE,
+            BLOCK_SIZE
           );
           context.strokeRect(
             col * BLOCK_SIZE,
             row * BLOCK_SIZE,
             BLOCK_SIZE,
-            BLOCK_SIZE,
+            BLOCK_SIZE
           );
         }
       }
@@ -70,13 +91,13 @@
             (currentX + col) * BLOCK_SIZE,
             (currentY + row) * BLOCK_SIZE,
             BLOCK_SIZE,
-            BLOCK_SIZE,
+            BLOCK_SIZE
           );
           context.strokeRect(
             (currentX + col) * BLOCK_SIZE,
             (currentY + row) * BLOCK_SIZE,
             BLOCK_SIZE,
-            BLOCK_SIZE,
+            BLOCK_SIZE
           );
         }
       }
@@ -148,9 +169,9 @@
     }
   };
 
-  let timeoutId: number;
+  let timeoutId;
 
-  const gameLoop = () => {
+  const gameLoop = (isNotMoveDown: boolean = false) => {
     if (!context || !canvas) {
       return;
     }
@@ -166,7 +187,11 @@
     context.clearRect(0, 0, canvas.width, canvas.height);
     drawBoard();
     drawPiece();
-    movePiece(0, 1);
+
+    if (!isNotMoveDown) {
+      movePiece(0, 1);
+    }
+
     timeoutId = setTimeout(gameLoop, 1030 - level * 30);
   };
 

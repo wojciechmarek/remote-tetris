@@ -5,8 +5,8 @@
   const dispatch = createEventDispatcher();
 
   const handleKeyDownPress = (id: string) => {
-    dispatch("buttonPress", id);
     navigator.vibrate(50);
+    dispatch("buttonPress", id);
   };
 </script>
 
