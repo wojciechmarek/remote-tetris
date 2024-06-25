@@ -16,17 +16,7 @@
 
   export let id: string;
 
-  let isStatsBarVisible = true;
   let remoteIp = "";
-
-  const handleOnStatsBarVisibleChange = () => {
-    if (isStatsBarVisible) {
-      isStatsBarVisible = false;
-      return;
-    }
-
-    isStatsBarVisible = true;
-  };
 
   const getOfferAndIceCandidatesByIdFromTheServer = async () => {
     const data = await fetch(`${server}/offer/${id}`, {

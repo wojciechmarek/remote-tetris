@@ -220,6 +220,9 @@
 
 <div class="game__container">
   <img src={backgroundImage} class="game__background" alt="" />
+  <div class="game__small-resolution">
+    <p>The resolution is not supported. The minimum width is 992px.</p>
+  </div>
   <div class="game__main-content">
     {#if isGameStartModalVisible}
       <GameStartModal
@@ -263,6 +266,25 @@
     width: 100%;
     height: 100vh;
     position: relative;
+  }
+
+  .game__small-resolution {
+    z-index: 1;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    background-color: #151c59;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media screen and (max-width: 992px) {
+    .game__small-resolution {
+      display: flex;
+    }
   }
 
   .game__background {
