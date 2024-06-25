@@ -37,7 +37,7 @@
     border: 0.25em solid #151c59;
     display: flex;
     gap: 1em;
-    padding: 1em 5em;
+    padding: 1em 2em;
   }
 
   .time__content {
