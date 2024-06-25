@@ -1,19 +1,17 @@
 <script lang="ts">
   export let connectedTo: string = "";
-  export let rows: number = 0;
-  export let ping: number = 0;
 </script>
 
 <div class="status__container">
   <div class="status__row">
     <p class="status__text">
       Connected to: <span class="status__dot" /><span class="status__span"
-        >123.126.34.11 / {connectedTo}</span
+        >{connectedTo}</span
       >
     </p>
   </div>
 
-  <div class="status__row">
+  <!-- <div class="status__row">
     <p class="status__text">
       Your score: <span class="status__span">{rows} rows</span>
     </p>
@@ -21,7 +19,7 @@
 
   <div class="status__row">
     <p class="status__text">Ping: <span class="status__span">{ping}ms</span></p>
-  </div>
+  </div> -->
 </div>
 
 <style>

@@ -16,6 +16,7 @@
   export let id: string;
 
   let isStatsBarVisible = true;
+  let remoteIp = "";
 
   const handleOnStatsBarVisibleChange = () => {
     if (isStatsBarVisible) {
@@ -71,12 +72,20 @@
     const result = await getOfferAndIceCandidatesByIdFromTheServer();
     await setOfferToWebRCTPeer(result.offer);
     await setIceCandidatesToWebRCTPeer(result.iceCandidates);
+
+    calculateRemoteIpAddress(result.iceCandidates);
+
     const answer = await generateTheAnswer();
 
     setTimeout(async () => {
       await postTheAnswerAndIceCandidatesToTheServer(id, answer);
     }, 1000);
   });
+
+  const calculateRemoteIpAddress = (ices: any[]) => {
+    const remoteCandidate = ices.find((ice) => ice.candidate.includes("raddr"));
+    remoteIp = remoteCandidate.candidate.split(" ")[9];
+  };
 
   let dataChannel: RTCDataChannel;
 
@@ -112,7 +121,7 @@
 </script>
 
 <div class="controller__container">
-  <!-- <Status connectedTo={"asd"} ping={24} rows={34} /> -->
+  <Status connectedTo={remoteIp} />
   <div class="controller__nintendo">
     <Nintendo on:buttonPress={handleOnButtonPress} />
   </div>
