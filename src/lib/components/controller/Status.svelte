@@ -43,7 +43,6 @@
   .status__text {
     font-size: 0.5rem;
     font-weight: 400;
-    color: #cccccc;
     text-shadow: #000000 0 1px;
   }
 </style>

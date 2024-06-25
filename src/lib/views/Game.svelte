@@ -213,7 +213,6 @@
 <div class="game__container">
   <img src={backgroundImage} class="game__background" alt="" />
   <div class="game__main-content">
-    <p>{id}</p>
     {#if isGameStartModalVisible}
       <GameStartModal
         {isRemoteController}
