@@ -46,8 +46,4 @@
     color: #cccccc;
     text-shadow: #000000 0 1px;
   }
-
-  .status__span {
-    color: #ffffff;
-  }
 </style>

@@ -57,7 +57,6 @@
     answer: RTCSessionDescriptionInit
   ) => {
     const payload = { answer, iceCandidates };
-    console.warn(payload);
 
     await fetch(`${server}/answer/${id}`, {
       method: "POST",
