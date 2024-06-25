@@ -139,21 +139,22 @@
   const configurePeer = async () => {
     dataChannel = peer.createDataChannel("chat");
 
+    dataChannel.onopen = (event: Event) => {
+      isRemoteController = true;
+      isRemoteDetailsVisible = true;
+    };
+
+    dataChannel.onmessage = (event: MessageEvent) => {
+      handleRemoteButtonPress(event.data);
+    };
+
+    dataChannel.onclose = () => {
+      isRemoteController = false;
+      isRemoteDetailsVisible = false;
+    };
+
     offer = await peer.createOffer();
     await peer.setLocalDescription(offer);
-  };
-
-  dataChannel.onopen = (event: Event) => {
-    isRemoteController = true;
-    isRemoteDetailsVisible = true;
-  };
-
-  dataChannel.onmessage = (event: MessageEvent) => {
-    handleRemoteButtonPress(event.data);
-  };
-  dataChannel.onclose = () => {
-    isRemoteController = false;
-    isRemoteDetailsVisible = false;
   };
 
   const sendOfferAndIceCandidatesToServer = async () => {
