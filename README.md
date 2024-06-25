@@ -38,6 +38,8 @@ A demo is available at [https://web-rtc-tetris.vercel.app](https://web-rtc-tetri
 - 🎨 Styling: standard CSS,
 - 💎 Others: desktop-first approach, WebRTC communication.
 
+## Encountered problems and its solutions
+
 ### Image `<map>` is not responsive
 
 The HTML `<map>` tag defines an image map, but the defined elements are based on pixels, so it does not support scaling up and down with a responsive image.
