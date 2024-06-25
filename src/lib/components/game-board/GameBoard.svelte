@@ -8,6 +8,7 @@
 
   export let isPaused: boolean = true;
   export let isRemoteController: boolean = false;
+  export let isRemoteDetailsVisible: boolean = false;
   export let buttonId: string = "";
   export let remoteIp: string = "";
 
@@ -67,7 +68,7 @@
   />
   <p>Press {isRemoteController ? "START" : "ESCAPE"} to pause or quit</p>
 </div>
-{#if isRemoteController}
+{#if isRemoteDetailsVisible}
   <RemoteDetails connectedTo={remoteIp} {buttonId} />
 {/if}
 

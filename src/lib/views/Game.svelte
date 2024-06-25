@@ -18,6 +18,7 @@
   let isPaused = false;
   let isGameOver = false;
   let isRemoteController = false;
+  let isRemoteDetailsVisible = false;
   let remoteIp = "";
 
   let id;
@@ -81,7 +82,6 @@
     handleOnSelectKeyboardClick();
   };
 
-  let dataChannel: RTCDataChannel;
   let buttonId: string;
 
   const handleRemoteButtonPress = (buttonKey: string) => {
@@ -100,13 +100,13 @@
       return;
     }
 
-    if (isRemoteController && buttonKey === "x") {
-      isRemoteController = false;
+    if (isRemoteDetailsVisible && buttonKey === "x") {
+      isRemoteDetailsVisible = false;
       return;
     }
 
-    if (!isRemoteController && buttonKey === "x") {
-      isRemoteController = true;
+    if (!isRemoteDetailsVisible && buttonKey === "x") {
+      isRemoteDetailsVisible = true;
       return;
     }
 
@@ -134,21 +134,26 @@
   // ------ web rtc -------
 
   let offer: RTCSessionDescriptionInit;
+  let dataChannel: RTCDataChannel;
 
   const configurePeer = async () => {
     dataChannel = peer.createDataChannel("chat");
-    dataChannel.onopen = (event: Event) => {
-      isRemoteController = true;
-    };
-    dataChannel.onmessage = (event: MessageEvent) => {
-      handleRemoteButtonPress(event.data);
-    };
-    dataChannel.onclose = () => {
-      isRemoteController = true;
-    };
 
     offer = await peer.createOffer();
     await peer.setLocalDescription(offer);
+  };
+
+  dataChannel.onopen = (event: Event) => {
+    isRemoteController = true;
+    isRemoteDetailsVisible = true;
+  };
+
+  dataChannel.onmessage = (event: MessageEvent) => {
+    handleRemoteButtonPress(event.data);
+  };
+  dataChannel.onclose = () => {
+    isRemoteController = false;
+    isRemoteDetailsVisible = false;
   };
 
   const sendOfferAndIceCandidatesToServer = async () => {
@@ -228,6 +233,7 @@
       <GameBoard
         {remoteIp}
         {isPaused}
+        {isRemoteDetailsVisible}
         {isRemoteController}
         {buttonId}
         on:gamePause={handleOnGamePause}
