@@ -5,10 +5,12 @@
   import GameBoard from "@components/game-board/GameBoard.svelte";
   import backgroundImage from "@images/background.webp";
   import { io } from "socket.io-client";
-  import { url, server } from "../config";
 
   import { v4 as uuidv4 } from "uuid";
   import { onMount } from "svelte";
+
+  const url = import.meta.env.VITE_CONTROLLER_URL;
+  const server = import.meta.env.VITE_SERVER_URL;
 
   // ------- boolean values -------
   let isGameStartModalVisible = true;

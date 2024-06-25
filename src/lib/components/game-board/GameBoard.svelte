@@ -65,7 +65,7 @@
     on:lineCompleted={handleOnLineCompleted}
     on:gameOver={() => dispatch("gameOver")}
   />
-  <p>Press ESCAPE to pause or quit</p>
+  <p>Press {isRemoteController ? "START" : "ESCAPE"} to pause or quit</p>
 </div>
 {#if isRemoteController}
   <RemoteDetails connectedTo={remoteIp} {buttonId} />

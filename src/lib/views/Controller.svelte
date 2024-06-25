@@ -3,7 +3,8 @@
   import Nintendo from "../components/controller/Nintendo.svelte";
   import Status from "../components/controller/Status.svelte";
   import Warning from "../components/controller/Warning.svelte";
-  import { server } from "../config";
+
+  const server = import.meta.env.VITE_SERVER_URL;
 
   export const peer = new RTCPeerConnection({
     iceServers: [
