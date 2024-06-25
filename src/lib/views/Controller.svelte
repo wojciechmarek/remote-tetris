@@ -99,7 +99,6 @@
   };
 
   peer.onconnectionstatechange = function (event) {
-    console.log("asdasdasd");
     if (peer.connectionState === "connected") {
       button = JSON.stringify(peer);
     }
@@ -107,8 +106,6 @@
 
   let button;
   const handleOnButtonPress = (event: CustomEvent) => {
-    console.log(event.detail);
-
     button = event.detail;
     if (dataChannel) {
       dataChannel.send(event.detail);
@@ -118,7 +115,7 @@
 
 <div class="controller__container">
   <!-- <Status connectedTo={"asd"} ping={24} rows={34} /> -->
-  <p style="background-color: red;">{status}</p>
+  <p style="background-color: red;">status: {status}</p>
   <p style="background-color: red;">button: {button}</p>
   <div class="controller__nintendo">
     <Nintendo on:buttonPress={handleOnButtonPress} />
@@ -133,6 +130,7 @@
     width: 100%;
     height: 100vh;
     background-color: white;
+    position: relative;
   }
 
   .controller__nintendo {

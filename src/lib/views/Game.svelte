@@ -84,6 +84,48 @@
   let dataChannel: RTCDataChannel;
   let buttonId: string;
 
+  const handleRemoteButtonPress = (buttonKey: string) => {
+    if (isPaused && buttonKey === "start") {
+      handleOnResumeClick();
+      return;
+    }
+
+    if (!isPaused && buttonKey === "start") {
+      handleOnGamePause();
+      return;
+    }
+
+    if (isRemoteController && buttonKey === "x") {
+      isRemoteController = false;
+      return;
+    }
+
+    if (!isRemoteController && buttonKey === "x") {
+      isRemoteController = true;
+      return;
+    }
+
+    if ((isGameOver || isPaused) && buttonKey === "a") {
+      handleOnQuitClick();
+      return;
+    }
+
+    if (isGameOver && buttonKey === "y") {
+      handleOnNewGameClick();
+      return;
+    }
+
+    if (isPaused && buttonKey === "y") {
+      handleOnResumeClick();
+      return;
+    }
+
+    buttonId = buttonKey;
+    setTimeout(() => {
+      buttonId = "";
+    }, 50);
+  };
+
   // ------ web rtc -------
 
   let offer: RTCSessionDescriptionInit;
@@ -92,13 +134,11 @@
     dataChannel = peer.createDataChannel("chat");
     dataChannel.onopen = () => {
       status = "Data channel open!";
+      isRemoteController = true;
     };
     dataChannel.onmessage = (event) => {
       status = "Pressed button: " + event.data;
-      buttonId = event.data;
-      setTimeout(() => {
-        buttonId = "";
-      }, 50);
+      handleRemoteButtonPress(event.data);
     };
 
     offer = await peer.createOffer();
@@ -119,6 +159,7 @@
     const receiveChannel = event.channel;
     receiveChannel.onopen = () => {
       status = "Data channel open!";
+      isRemoteController = true;
     };
     receiveChannel.onmessage = (event) => {
       status = "Pressed button: " + event.data;
@@ -143,7 +184,6 @@
     }
   };
 
-  let value = "is connected ?";
   const socket = io(server);
 
   // ---- web socket.io -----
