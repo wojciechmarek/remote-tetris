@@ -5,8 +5,7 @@
 <div class="status__container">
   <div class="status__row">
     <p class="status__text">
-      Connected to: {connectedTo}</span
-      >
+      Connected to: {connectedTo}
     </p>
   </div>
 
