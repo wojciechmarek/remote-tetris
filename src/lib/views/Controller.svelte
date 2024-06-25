@@ -79,14 +79,14 @@
   });
 
   let dataChannel: RTCDataChannel;
-  let status;
+
   peer.ondatachannel = (event) => {
     dataChannel = event.channel;
     dataChannel.onopen = () => {
-      status = "Data channel open!";
+      // status = "Data channel open!";
     };
     dataChannel.onmessage = (event) => {
-      status = event.data;
+      // handle
     };
   };
 
@@ -100,13 +100,11 @@
 
   peer.onconnectionstatechange = function (event) {
     if (peer.connectionState === "connected") {
-      button = JSON.stringify(peer);
+      // handle
     }
   };
 
-  let button;
   const handleOnButtonPress = (event: CustomEvent) => {
-    button = event.detail;
     if (dataChannel) {
       dataChannel.send(event.detail);
     }
@@ -115,8 +113,6 @@
 
 <div class="controller__container">
   <!-- <Status connectedTo={"asd"} ping={24} rows={34} /> -->
-  <p style="background-color: red;">status: {status}</p>
-  <p style="background-color: red;">button: {button}</p>
   <div class="controller__nintendo">
     <Nintendo on:buttonPress={handleOnButtonPress} />
   </div>

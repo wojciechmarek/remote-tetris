@@ -16,6 +16,7 @@
   let isPaused = false;
   let isGameOver = false;
   let isRemoteController = false;
+  let remoteIp = "";
 
   let id;
   let qrCodeValue;
@@ -85,6 +86,11 @@
   let buttonId: string;
 
   const handleRemoteButtonPress = (buttonKey: string) => {
+    if (isGameStartModalVisible && buttonKey === "start") {
+      handleOnResumeClick();
+      return;
+    }
+
     if (isPaused && buttonKey === "start") {
       handleOnResumeClick();
       return;
@@ -123,7 +129,7 @@
     buttonId = buttonKey;
     setTimeout(() => {
       buttonId = "";
-    }, 50);
+    }, 100);
   };
 
   // ------ web rtc -------
@@ -132,11 +138,11 @@
 
   const configurePeer = async () => {
     dataChannel = peer.createDataChannel("chat");
-    dataChannel.onopen = () => {
+    dataChannel.onopen = (event: Event) => {
       status = "Data channel open!";
       isRemoteController = true;
     };
-    dataChannel.onmessage = (event) => {
+    dataChannel.onmessage = (event: MessageEvent) => {
       status = "Pressed button: " + event.data;
       handleRemoteButtonPress(event.data);
     };
@@ -153,21 +159,6 @@
     });
 
     socket.emit("offerAndIceCandidates", payload);
-  };
-
-  peer.ondatachannel = (event) => {
-    const receiveChannel = event.channel;
-    receiveChannel.onopen = () => {
-      status = "Data channel open!";
-      isRemoteController = true;
-    };
-    receiveChannel.onmessage = (event) => {
-      status = "Pressed button: " + event.data;
-      buttonId = event.data;
-      setTimeout(() => {
-        buttonId = "";
-      }, 50);
-    };
   };
 
   const iceCandidates: RTCIceCandidate[] = [];
@@ -193,12 +184,20 @@
 
       await peer.setRemoteDescription(asd);
       const ices = result.iceCandidates;
+
+      calculateRemoteIpAddress(ices);
+
       ices.forEach(async (item) => {
         await peer.addIceCandidate(item);
       });
 
       //handleOnSelectKeyboardClick();
     });
+  };
+
+  const calculateRemoteIpAddress = (ices: any[]) => {
+    const remoteCandidate = ices.find((ice) => ice.candidate.includes("raddr"));
+    remoteIp = remoteCandidate.candidate.split(" ")[9];
   };
 
   // ------ on mount --------
@@ -216,9 +215,9 @@
 <div class="game__container">
   <img src={backgroundImage} class="game__background" alt="" />
   <div class="game__main-content">
-    <p>{status}</p>
     {#if isGameStartModalVisible}
       <GameStartModal
+        {isRemoteController}
         {qrCodeValue}
         on:refreshQrCodeClick={handleOnRefreshQrCodeClick}
         on:selectWasdKeysClick={handleOnSelectKeyboardClick}
@@ -227,6 +226,7 @@
 
     {#if isGameBoardVisible}
       <GameBoard
+        {remoteIp}
         {isPaused}
         {isRemoteController}
         {buttonId}

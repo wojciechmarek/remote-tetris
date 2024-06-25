@@ -17,9 +17,6 @@
     }
 
     switch (buttonId) {
-      // case "start":
-      // dispatch("pauseGame");
-      // break;
       case "left":
         movePiece(-1, 0);
         gameLoop(true);
@@ -32,7 +29,11 @@
         movePiece(0, 1);
         gameLoop(true);
         break;
-      case "up" || "b":
+      case "up":
+        rotatePiece();
+        gameLoop(true);
+        break;
+      case "b":
         rotatePiece();
         gameLoop(true);
         break;

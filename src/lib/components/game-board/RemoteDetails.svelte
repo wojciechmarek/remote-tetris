@@ -1,6 +1,6 @@
 <script lang="ts">
   export let connectedTo: string = "";
-  export let ping: number = 0;
+  export let buttonId: string = "";
 </script>
 
 <div class="remote-details__container">
@@ -27,7 +27,7 @@
   </div>
   <div class="remote-details__section flex_grow">
     <div class="remote-details__row">Connected to: {connectedTo}</div>
-    <div class="remote-details__row">Ping: {ping}ms</div>
+    <div class="remote-details__row">Pressed button: {buttonId}</div>
   </div>
 </div>
 

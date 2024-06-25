@@ -9,6 +9,7 @@
   export let isPaused: boolean = true;
   export let isRemoteController: boolean = false;
   export let buttonId: string = "";
+  export let remoteIp: string = "";
 
   let gameTimeInSeconds: number = -2;
   let level: number = 1;
@@ -67,7 +68,7 @@
   <p>Press ESCAPE to pause or quit</p>
 </div>
 {#if isRemoteController}
-  <RemoteDetails connectedTo="123.123.123.123" ping={34} />
+  <RemoteDetails connectedTo={remoteIp} {buttonId} />
 {/if}
 
 <style>

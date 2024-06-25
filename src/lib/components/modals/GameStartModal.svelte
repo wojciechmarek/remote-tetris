@@ -8,6 +8,18 @@
   const dispatch = createEventDispatcher();
 
   export let qrCodeValue: string = "";
+  export let isRemoteController: boolean = false;
+
+  let controllerStatus = "";
+
+  $: {
+    if (isRemoteController) {
+      controllerStatus =
+        "Remote controller connected! Press start to begin the game";
+    } else {
+      controllerStatus = "";
+    }
+  }
 
   const onRefreshCodeClick = () => {
     dispatch("refreshQrCodeClick");
@@ -44,6 +56,9 @@
       </div>
     </div>
   </div>
+  <p class="game-start__controller-connected">
+    {controllerStatus}
+  </p>
 </div>
 
 <style>
@@ -94,5 +109,10 @@
     height: 100%;
     object-fit: cover;
     padding: 8px;
+  }
+
+  .game-start__controller-connected {
+    height: 2em;
+    text-align: center;
   }
 </style>
