@@ -79,7 +79,6 @@
     handleOnSelectKeyboardClick();
   };
 
-  let status = "";
   let dataChannel: RTCDataChannel;
   let buttonId: string;
 
@@ -137,12 +136,13 @@
   const configurePeer = async () => {
     dataChannel = peer.createDataChannel("chat");
     dataChannel.onopen = (event: Event) => {
-      status = "Data channel open!";
       isRemoteController = true;
     };
     dataChannel.onmessage = (event: MessageEvent) => {
-      status = "Pressed button: " + event.data;
       handleRemoteButtonPress(event.data);
+    };
+    dataChannel.onclose = () => {
+      isRemoteController = true;
     };
 
     offer = await peer.createOffer();
@@ -169,7 +169,7 @@
 
   peer.onconnectionstatechange = function (event: Event) {
     if (peer.connectionState === "connected") {
-      status = "Connected!!!!";
+      // handle
     }
   };
 
@@ -213,6 +213,7 @@
 <div class="game__container">
   <img src={backgroundImage} class="game__background" alt="" />
   <div class="game__main-content">
+    <p>{id}</p>
     {#if isGameStartModalVisible}
       <GameStartModal
         {isRemoteController}

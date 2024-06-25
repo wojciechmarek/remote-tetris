@@ -5,8 +5,7 @@
 <div class="status__container">
   <div class="status__row">
     <p class="status__text">
-      Connected to: <span class="status__dot" /><span class="status__span"
-        >{connectedTo}</span
+      Connected to: {connectedTo}</span
       >
     </p>
   </div>
@@ -40,17 +39,6 @@
     justify-content: start;
     align-items: center;
     gap: 1em;
-  }
-
-  .status__dot {
-    display: inline-block;
-    width: 0.5rem;
-    height: 0.5rem;
-    background-color: #00ff00;
-    border-radius: 50%;
-    margin-right: 0.5em;
-    padding: 0;
-    box-shadow: #000000 0 1px;
   }
 
   .status__text {

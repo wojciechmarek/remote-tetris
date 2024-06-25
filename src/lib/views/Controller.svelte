@@ -84,7 +84,7 @@
 
   const calculateRemoteIpAddress = (ices: any[]) => {
     const remoteCandidate = ices.find((ice) => ice.candidate.includes("raddr"));
-    remoteIp = remoteCandidate.candidate.split(" ")[9];
+    remoteIp = remoteCandidate.candidate.split(" ")[4];
   };
 
   let dataChannel: RTCDataChannel;
