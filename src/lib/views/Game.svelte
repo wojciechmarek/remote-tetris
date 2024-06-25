@@ -45,8 +45,6 @@
     isGameBoardVisible = true;
     isPaused = false;
     isGameOver = false;
-
-    isRemoteController = true;
   };
 
   const handleOnQuitClick = () => {
