@@ -63,9 +63,8 @@
 
   .key_frame {
     background-color: #284fe6;
-    padding: 0.125em;
     border-radius: 0.125em;
-    margin: 0;
+    padding: 2px;
   }
 
   .yellow_dot {
