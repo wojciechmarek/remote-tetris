@@ -2,7 +2,7 @@
   import { createEventDispatcher, onMount } from "svelte";
   import Canvas from "./Canvas.svelte";
   import Statistics from "./Statistics.svelte";
-  import RemoteDetails from "./RemoteDetails.svelte";
+  import ControllerInfo from "./ControllerInfo.svelte";
 
   const dispatch = createEventDispatcher();
 
@@ -69,7 +69,7 @@
   <p>Press {isRemoteController ? "START" : "ESCAPE"} to pause or quit</p>
 </div>
 {#if isRemoteDetailsVisible}
-  <RemoteDetails connectedTo={remoteIp} {buttonId} />
+  <ControllerInfo connectedTo={remoteIp} {buttonId} />
 {/if}
 
 <style>
