@@ -60,6 +60,7 @@
     padding: 0.125em;
     border-radius: 0.25em;
     line-height: 13pt;
+    display: inline-block;
   }
 
   .yellow_dot {
