@@ -68,7 +68,7 @@
   />
   <p>Press {isRemoteController ? "START" : "ESCAPE"} to pause or quit</p>
 </div>
-{#if true}
+{#if isRemoteDetailsVisible}
   <ControllerInfo connectedTo={remoteIp} {buttonId} />
 {/if}
 

@@ -5,27 +5,21 @@
 
 <div class="remote-details__container">
   <div class="remote-details__section">
+    <div class="remote-details__row">◀️ or ▶️ - move the Tetromino</div>
+    <div class="remote-details__row">🔽 - accelerate the Tetromino</div>
     <div class="remote-details__row">
-      <span class="key_frame">⬅️</span> or <span class="key_frame">➡️</span> - move
-      the Tetromino
-    </div>
-    <div class="remote-details__row">
-      <span class="key_frame">🔽</span> - accelerate the Tetromino
-    </div>
-    <div class="remote-details__row">
-      <span class="key_frame">🔼</span> /
-      <span class="remote-details__dot yellow_dot" /> - rotate the Tetromino
+      🔼 / <span class="remote-details__dot yellow_dot" /> - rotate the Tetromino
     </div>
   </div>
   <div class="remote-details__section">
     <div class="remote-details__row">
-      <span class="key_frame">START</span> - pause or resume
+      <span class="start_text">START</span> - pause or resume
     </div>
     <div class="remote-details__row">
-      <span class="remote-details__dot red_dot" /> - quit button in modal
+      <span class="remote-details__dot red_dot" /> - quit modal button
     </div>
     <div class="remote-details__row">
-      <span class="remote-details__dot green_dot" /> - new game button in modal
+      <span class="remote-details__dot green_dot" /> - new game modal button
     </div>
     <div class="remote-details__row">
       <span class="remote-details__dot blue_dot" /> - hide this window
@@ -61,12 +55,11 @@
     border-radius: 50%;
   }
 
-  .key_frame {
+  .start_text {
     background-color: #284fe6;
     padding: 0.125em;
-    border-radius: 0.125em;
-    display: inline-block;
-    line-height: 12.5pt;
+    border-radius: 0.25em;
+    line-height: 13pt;
   }
 
   .yellow_dot {
