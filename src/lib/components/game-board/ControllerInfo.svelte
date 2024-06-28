@@ -63,8 +63,10 @@
 
   .key_frame {
     background-color: #284fe6;
+    padding: 0.125em;
     border-radius: 0.125em;
-    padding: 2px;
+    display: inline-block;
+    line-height: 12.5pt;
   }
 
   .yellow_dot {
