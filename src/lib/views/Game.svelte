@@ -9,6 +9,8 @@
   import { QrCodeUtils, WebRTCUtils } from "@utils/index";
   import { WebSocketUtils } from "@utils/web-socket.utils";
 
+  const isDebugMode = true;
+
   //#region Utilities
   const { generateNewId, generateNewQrCodeValueBasedOnId } = QrCodeUtils();
   const {
@@ -17,7 +19,8 @@
     setOfferToThePeer,
     setIceCandidatesToThePeer,
     calculateRemoteIpAddress,
-    subscribeForButtonPressFromRemoteController
+    subscribeForButtonPressFromRemoteController,
+    subscribeForChannelOpenFromRemoteController
   } = WebRTCUtils();
   const {
     emitIdAndOfferAndIceCandidatesToServer,
@@ -139,27 +142,37 @@
     const iceCandidates = getIceCandidates();
 
     setTimeout(async () => {
+      console.log("sending to hub:", id, offer, iceCandidates);
+
       await emitIdAndOfferAndIceCandidatesToServer(id, offer, iceCandidates);
     }, 100);
   };
 
-  const applyReceivedConnectionDataFromController = (result) => {
+  const applyReceivedConnectionDataFromController = async (result) => {
     const { answer, iceCandidates } = result;
     const sessionDescription = new RTCSessionDescription(answer);
-    setOfferToThePeer(sessionDescription);
-    setIceCandidatesToThePeer(iceCandidates);
+    await setOfferToThePeer(sessionDescription);
+    await setIceCandidatesToThePeer(iceCandidates);
   };
   //#endregion
 
   //#region OnMount
   onMount(async () => {
     await setUpNewWebRTCConnection();
-    subscribeForAnswerAndIceCandidatesFromServer((result) => {
-      applyReceivedConnectionDataFromController(result);
+
+    subscribeForAnswerAndIceCandidatesFromServer(async (result) => {
+      console.log("received from server", result);
+
+      await applyReceivedConnectionDataFromController(result);
       remoteIp = calculateRemoteIpAddress(result.iceCandidates);
     });
+
     subscribeForButtonPressFromRemoteController((remoteButtonId) => {
       handleRemoteButtonPress(remoteButtonId);
+    });
+
+    subscribeForChannelOpenFromRemoteController((isChannelOpen) => {
+      isRemoteController = isChannelOpen;
     });
   });
   //#endregion
@@ -171,6 +184,9 @@
     <p>The resolution is not supported. The minimum width is 992px.</p>
   </div>
   <div class="game__main-content">
+    {#if isDebugMode}
+      <p>{qrCodeValue}</p>
+    {/if}
     {#if isGameStartModalVisible}
       <GameStartModal
         {isRemoteController}

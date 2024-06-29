@@ -28,6 +28,6 @@ export const ApiUtils = () => {
 
   return {
     getOfferAndIceCandidatesByIdFromTheServer,
-    postTheAnswerAndIceCandidatesToTheServer,
-  }
-}
+    postTheAnswerAndIceCandidatesToTheServer
+  };
+};

@@ -29,7 +29,7 @@ let socketObj = undefined;
 io.on("connection", socket => {
   socketObj = socket;
 
-  socket.on("offerAndIceCandidates", offer => {
+  socket.on("idOfferIceCandidates", offer => {
     offersAndIceCandidates.push(JSON.parse(offer));
   });
 
@@ -58,7 +58,7 @@ app.post("/answer/:id", function(req, res, next) {
 
 const informInitiatorForNewAnswer = id => {
   const result = answersAndIceCandidates.find(answer => answer.id === id);
-  socketObj.emit("answer", result.data);
+  socketObj.emit("answerIceCandidates", result.data);
 };
 
 httpServer.listen(3000, () => {

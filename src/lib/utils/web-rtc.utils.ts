@@ -11,12 +11,13 @@ export const WebRTCUtils = () => {
 
   //#region Public Values
   let isDataChannelOpen = false;
+  let dataChannel: RTCDataChannel;
   //#endregion
 
   //#region Variables
-  let dataChannel: RTCDataChannel;
   const iceCandidates: RTCIceCandidate[] = [];
-  let onMessageEvent: (id: string) => void;
+  let onMessageEvent: (message: string) => void
+  let onChannelOpen: (isOpen: boolean) => void
   //#endregion
 
   //#region Events Listeners
@@ -47,17 +48,19 @@ export const WebRTCUtils = () => {
   const initNewWebRTCPeer = async () => {
     dataChannel = peer.createDataChannel("tetris-data");
 
+
     dataChannel.onopen = (event: Event) => {
-      isDataChannelOpen = true;
+      onChannelOpen(true);
     };
 
     dataChannel.onmessage = (event: MessageEvent) => {
-      onMessageEvent = event.data;
+      onMessageEvent(event.data)
     };
 
     dataChannel.onclose = (event: Event) => {
-      isDataChannelOpen = false;
+      onChannelOpen(false);
     };
+
 
     const offer = await peer.createOffer();
     await peer.setLocalDescription(offer);
@@ -89,7 +92,7 @@ export const WebRTCUtils = () => {
     const remoteCandidate = iceCandidates.find(ice =>
       ice.candidate.includes("raddr")
     );
-    const remoteIp = remoteCandidate.candidate.split(" ")[4];
+    const remoteIp = remoteCandidate?.candidate.split(" ")[4];
     return remoteIp;
   };
 
@@ -110,8 +113,12 @@ export const WebRTCUtils = () => {
   };
 
   const subscribeForButtonPressFromRemoteController = callback => {
-    callback = onMessageEvent;
+    onMessageEvent = callback;
   };
+
+  const subscribeForChannelOpenFromRemoteController = callback => {
+    onChannelOpen = callback;
+  }
   //#endregion
 
   //#region Private Methods
@@ -123,6 +130,7 @@ export const WebRTCUtils = () => {
   //#endregion
 
   return {
+    
     initNewWebRTCPeer,
     initWebRTCPeerBasedOnOfferAndIceCandidates,
     getIceCandidates,
@@ -130,6 +138,7 @@ export const WebRTCUtils = () => {
     calculateRemoteIpAddress,
     setOfferToThePeer,
     setIceCandidatesToThePeer,
-    subscribeForButtonPressFromRemoteController
+    subscribeForButtonPressFromRemoteController,
+    subscribeForChannelOpenFromRemoteController
   };
 };

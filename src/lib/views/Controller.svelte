@@ -21,17 +21,27 @@
   let remoteIp = "";
 
   onMount(async () => {
-    const offerAndIceCandidates =
+    const remoteOfferAndIceCandidates =
       await getOfferAndIceCandidatesByIdFromTheServer(id);
     const answer = await initWebRTCPeerBasedOnOfferAndIceCandidates(
-      offerAndIceCandidates
+      remoteOfferAndIceCandidates
     );
-    remoteIp = calculateRemoteIpAddress(offerAndIceCandidates.iceCandidates);
 
-    const iceCandidates = getIceCandidates();
+    console.log(remoteOfferAndIceCandidates);
+
+    remoteIp = calculateRemoteIpAddress(
+      remoteOfferAndIceCandidates.iceCandidates
+    );
+
+    const myIceCandidates = getIceCandidates();
 
     setTimeout(async () => {
-      await postTheAnswerAndIceCandidatesToTheServer(id, answer, iceCandidates);
+      console.log("posting to the server:", id, answer, myIceCandidates);
+      await postTheAnswerAndIceCandidatesToTheServer(
+        id,
+        answer,
+        myIceCandidates
+      );
     }, 1000);
   });
 
