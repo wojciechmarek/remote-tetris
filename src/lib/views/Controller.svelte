@@ -4,109 +4,39 @@
   import Status from "../components/controller/Status.svelte";
   import Warning from "../components/controller/Warning.svelte";
 
-  const server = import.meta.env.VITE_SERVER_URL;
+  import { ApiUtils, WebRTCUtils } from "@utils/index";
 
-  export const peer = new RTCPeerConnection({
-    iceServers: [
-      {
-        urls: "stun:stun.l.google.com:19302"
-      }
-    ]
-  });
+  const {
+    initWebRTCPeerBasedOnOfferAndIceCandidates,
+    getIceCandidates,
+    calculateRemoteIpAddress,
+    sendKeyIdThoughtChannel
+  } = WebRTCUtils();
+  const {
+    getOfferAndIceCandidatesByIdFromTheServer,
+    postTheAnswerAndIceCandidatesToTheServer
+  } = ApiUtils();
 
   export let id: string;
-
   let remoteIp = "";
 
-  const getOfferAndIceCandidatesByIdFromTheServer = async () => {
-    const data = await fetch(`${server}/offer/${id}`, {
-      method: "GET"
-    });
-
-    const result = await data.json();
-    return result;
-  };
-
-  const setOfferToWebRCTPeer = async (offer: RTCSessionDescriptionInit) => {
-    await peer.setRemoteDescription(offer);
-  };
-
-  const setIceCandidatesToWebRCTPeer = async (ices: RTCIceCandidateInit[]) => {
-    ices.forEach(async (item) => {
-      await peer.addIceCandidate(item);
-    });
-  };
-
-  const generateTheAnswer = async () => {
-    const answer = await peer.createAnswer();
-    await peer.setLocalDescription(answer);
-    return answer;
-  };
-
-  const postTheAnswerAndIceCandidatesToTheServer = async (
-    id: string,
-    answer: RTCSessionDescriptionInit
-  ) => {
-    const payload = { answer, iceCandidates };
-
-    await fetch(`${server}/answer/${id}`, {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-  };
-
   onMount(async () => {
-    const result = await getOfferAndIceCandidatesByIdFromTheServer();
-    await setOfferToWebRCTPeer(result.offer);
-    await setIceCandidatesToWebRCTPeer(result.iceCandidates);
+    const offerAndIceCandidates =
+      await getOfferAndIceCandidatesByIdFromTheServer(id);
+    const answer = await initWebRTCPeerBasedOnOfferAndIceCandidates(
+      offerAndIceCandidates
+    );
+    remoteIp = calculateRemoteIpAddress(offerAndIceCandidates.iceCandidates);
 
-    calculateRemoteIpAddress(result.iceCandidates);
-
-    const answer = await generateTheAnswer();
+    const iceCandidates = getIceCandidates();
 
     setTimeout(async () => {
-      await postTheAnswerAndIceCandidatesToTheServer(id, answer);
+      await postTheAnswerAndIceCandidatesToTheServer(id, answer, iceCandidates);
     }, 1000);
   });
 
-  const calculateRemoteIpAddress = (ices: any[]) => {
-    const remoteCandidate = ices.find((ice) => ice.candidate.includes("raddr"));
-    remoteIp = remoteCandidate.candidate.split(" ")[4];
-  };
-
-  let dataChannel: RTCDataChannel;
-
-  peer.ondatachannel = (event) => {
-    dataChannel = event.channel;
-    dataChannel.onopen = () => {
-      // status = "Data channel open!";
-    };
-    dataChannel.onmessage = (event) => {
-      // handle
-    };
-  };
-
-  const iceCandidates: RTCIceCandidate[] = [];
-
-  peer.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
-    if (event.candidate) {
-      iceCandidates.push(event.candidate);
-    }
-  };
-
-  peer.onconnectionstatechange = function (event) {
-    if (peer.connectionState === "connected") {
-      // handle
-    }
-  };
-
   const handleOnButtonPress = (event: CustomEvent) => {
-    if (dataChannel) {
-      dataChannel.send(event.detail);
-    }
+    sendKeyIdThoughtChannel(event.detail);
   };
 </script>
 

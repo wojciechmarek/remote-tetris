@@ -4,45 +4,41 @@
   import GameOverModal from "@components/modals/GameOverModal.svelte";
   import GameBoard from "@components/game-board/GameBoard.svelte";
   import backgroundImage from "@images/background.webp";
-  import { io } from "socket.io-client";
 
-  import { v4 as uuidv4 } from "uuid";
   import { onMount } from "svelte";
+  import { QrCodeUtils, WebRTCUtils } from "@utils/index";
+  import { WebSocketUtils } from "@utils/web-socket.utils";
 
-  const url = import.meta.env.VITE_CONTROLLER_URL;
-  const server = import.meta.env.VITE_SERVER_URL;
+  //#region Utilities
+  const { generateNewId, generateNewQrCodeValueBasedOnId } = QrCodeUtils();
+  const {
+    initNewWebRTCPeer,
+    getIceCandidates,
+    setOfferToThePeer,
+    setIceCandidatesToThePeer,
+    calculateRemoteIpAddress,
+    subscribeForButtonPressFromRemoteController
+  } = WebRTCUtils();
+  const {
+    emitIdAndOfferAndIceCandidatesToServer,
+    subscribeForAnswerAndIceCandidatesFromServer
+  } = WebSocketUtils();
+  //#endregion
 
-  // ------- boolean values -------
+  //#region Variables
   let isGameStartModalVisible = true;
   let isGameBoardVisible = false;
   let isPaused = false;
   let isGameOver = false;
   let isRemoteController = false;
   let isRemoteDetailsVisible = false;
+
+  let qrCodeValue = "";
   let remoteIp = "";
+  let buttonId = "";
+  //#endregion
 
-  let id;
-  let qrCodeValue;
-
-  const generateNewIdAndNewQrCodeLink = () => {
-    id = uuidv4();
-    qrCodeValue = `${url}/${id}`;
-  };
-
-  export const peer = new RTCPeerConnection({
-    iceServers: [
-      {
-        urls: "stun:stun.l.google.com:19302"
-      }
-    ]
-  });
-
-  // ------ events handlers -------
-  const handleOnRefreshQrCodeClick = async () => {
-    generateNewIdAndNewQrCodeLink();
-    await sendOfferAndIceCandidatesToServer();
-  };
-
+  //#region Event handlers
   const handleOnSelectKeyboardClick = () => {
     isGameStartModalVisible = false;
     isGameBoardVisible = true;
@@ -78,11 +74,13 @@
     isGameOver = true;
   };
 
+  const handleOnRefreshQrCodeClick = async () => {
+    await setUpNewWebRTCConnection();
+  };
+
   const handleOnNewGameClick = () => {
     handleOnSelectKeyboardClick();
   };
-
-  let buttonId: string;
 
   const handleRemoteButtonPress = (buttonKey: string) => {
     if (isGameStartModalVisible && buttonKey === "start") {
@@ -130,92 +128,41 @@
       buttonId = "";
     }, 100);
   };
+  //#endregion
 
-  // ------ web rtc -------
+  //#region WebRTC helper methods
+  const setUpNewWebRTCConnection = async () => {
+    const id = generateNewId();
+    qrCodeValue = generateNewQrCodeValueBasedOnId(id);
 
-  let offer: RTCSessionDescriptionInit;
-  let dataChannel: RTCDataChannel;
-
-  const configurePeer = async () => {
-    dataChannel = peer.createDataChannel("chat");
-
-    dataChannel.onopen = (event: Event) => {
-      isRemoteController = true;
-      isRemoteDetailsVisible = true;
-    };
-
-    dataChannel.onmessage = (event: MessageEvent) => {
-      handleRemoteButtonPress(event.data);
-    };
-
-    dataChannel.onclose = () => {
-      isRemoteController = false;
-      isRemoteDetailsVisible = false;
-    };
-
-    offer = await peer.createOffer();
-    await peer.setLocalDescription(offer);
-  };
-
-  const sendOfferAndIceCandidatesToServer = async () => {
-    const payload = JSON.stringify({
-      id,
-      offer,
-      iceCandidates
-    });
-
-    socket.emit("offerAndIceCandidates", payload);
-  };
-
-  const iceCandidates: RTCIceCandidate[] = [];
-
-  peer.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
-    if (event.candidate) {
-      iceCandidates.push(event.candidate);
-    }
-  };
-
-  peer.onconnectionstatechange = function (event: Event) {
-    if (peer.connectionState === "connected") {
-      // handle
-    }
-  };
-
-  const socket = io(server);
-
-  // ---- web socket.io -----
-  const registerTheCallbackAnswerFromServer = () => {
-    socket.on("answer", async (result) => {
-      const asd = new RTCSessionDescription(result.answer);
-
-      await peer.setRemoteDescription(asd);
-      const ices = result.iceCandidates;
-
-      calculateRemoteIpAddress(ices);
-
-      ices.forEach(async (item) => {
-        await peer.addIceCandidate(item);
-      });
-
-      //handleOnSelectKeyboardClick();
-    });
-  };
-
-  const calculateRemoteIpAddress = (ices: any[]) => {
-    const remoteCandidate = ices.find((ice) => ice.candidate.includes("raddr"));
-    remoteIp = remoteCandidate.candidate.split(" ")[9];
-  };
-
-  // ------ on mount --------
-  onMount(async () => {
-    generateNewIdAndNewQrCodeLink();
-    await configurePeer();
-    registerTheCallbackAnswerFromServer();
+    const offer = await initNewWebRTCPeer();
+    const iceCandidates = getIceCandidates();
 
     setTimeout(async () => {
-      await sendOfferAndIceCandidatesToServer();
+      await emitIdAndOfferAndIceCandidatesToServer(id, offer, iceCandidates);
     }, 100);
+  };
+
+  const applyReceivedConnectionDataFromController = (result) => {
+    const { answer, iceCandidates } = result;
+    const sessionDescription = new RTCSessionDescription(answer);
+    setOfferToThePeer(sessionDescription);
+    setIceCandidatesToThePeer(iceCandidates);
+  };
+  //#endregion
+
+  //#region OnMount
+  onMount(async () => {
+    await setUpNewWebRTCConnection();
+    subscribeForAnswerAndIceCandidatesFromServer((result) => {
+      applyReceivedConnectionDataFromController(result);
+      remoteIp = calculateRemoteIpAddress(result.iceCandidates);
+    });
+    subscribeForButtonPressFromRemoteController((remoteButtonId) => {
+      handleRemoteButtonPress(remoteButtonId);
+    });
   });
+  //#endregion
 </script>
 
 <div class="game__container">
