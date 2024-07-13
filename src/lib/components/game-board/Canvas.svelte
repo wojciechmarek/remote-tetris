@@ -12,7 +12,7 @@
   export let buttonId: string = "";
 
   $: {
-    if (!isPaused) {
+    if (!isPaused || buttonId !== "") {
       gameLoop();
     }
 
@@ -31,8 +31,6 @@
         break;
       case "b":
         rotatePiece();
-        break;
-      case "":
         break;
     }
   }
