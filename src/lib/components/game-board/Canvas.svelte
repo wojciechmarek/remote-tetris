@@ -12,9 +12,9 @@
   export let buttonId: string = "";
 
   $: {
-    if (!isPaused || buttonId !== "") {
-      gameLoop();
-    }
+    // if (!isPaused || buttonId !== "") {
+    //   gameLoop();
+    // }
 
     switch (buttonId) {
       case "left":
