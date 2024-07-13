@@ -10,7 +10,9 @@ The application's purpose is to brush up my skills in the Svelte framework (Sing
 
 ⚠️ Use Google Chrome, other browsers were not tested so might not work ☠️
 
-A demo is available at [https://remote-tetris.vercel.app](https://remote-tetris.vercel.app).
+‼️ Remote controller only: the existing WebRTC communication does not work with the mobile networks.
+
+A live demo is available at [https://remote-tetris.vercel.app](https://remote-tetris.vercel.app).
 
 ## Screenshots
 

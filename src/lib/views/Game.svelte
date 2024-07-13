@@ -44,9 +44,9 @@
   //#endregion
 
   //#region Debug Mode variable
-  let isDebugMode = true;
-  if (import.meta.env.VERCEL_ENV === "production") {
-    isDebugMode = false;
+  let isDebugMode = false;
+  if (import.meta.env.DEV) {
+    isDebugMode = true;
   }
   //#endregion
 
