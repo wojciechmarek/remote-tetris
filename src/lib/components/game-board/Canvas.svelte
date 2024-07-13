@@ -172,7 +172,7 @@
 
   let timeoutId;
 
-  const gameLoop = (isMovePieceNeeded = true) => {
+  const gameLoop = (isMoveDownPieceNeeded = true) => {
     if (!context || !canvas) {
       return;
     }
@@ -189,7 +189,7 @@
     drawBoard();
     drawPiece();
 
-    if (isMovePieceNeeded) {
+    if (isMoveDownPieceNeeded) {
       movePiece(0, 1);
     }
 

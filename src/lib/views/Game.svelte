@@ -56,6 +56,9 @@
     isGameBoardVisible = true;
     isPaused = false;
     isGameOver = false;
+
+    isRemoteController = false;
+    isRemoteDetailsVisible = false;
   };
 
   const handleOnQuitClick = () => {
@@ -144,7 +147,10 @@
 
   //#region WebRTC helper methods
   const setUpNewWebRTCConnection = async () => {
+    isRemoteController = false;
+    isRemoteDetailsVisible = false;
     isQrCodeReadyToScan = false;
+
     const id = generateNewId();
     qrCodeValue = generateNewQrCodeValueBasedOnId(id);
 
@@ -187,9 +193,9 @@
       handleRemoteButtonPress(remoteButtonId);
     });
 
-    subscribeForChannelOpenFromRemoteController((isChannelOpen) => {
-      isRemoteController = isChannelOpen;
-      isRemoteDetailsVisible = isChannelOpen;
+    subscribeForChannelOpenFromRemoteController((isDataChannelOpen) => {
+      isRemoteController = isDataChannelOpen;
+      isRemoteDetailsVisible = isDataChannelOpen;
     });
   });
   //#endregion

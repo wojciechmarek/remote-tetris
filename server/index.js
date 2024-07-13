@@ -51,6 +51,8 @@ app.post("/answer/:id", function(req, res, next) {
       item => item.offer.id !== id
     );
 
+    connection.close();
+    console.info("[WebSocket] Successfully closed the connection.", id);
     console.info(
       "[Database] Successfully removed the offer and connection with id: ",
       id
