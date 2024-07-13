@@ -12,25 +12,30 @@
   export let buttonId: string = "";
 
   $: {
-    // if (!isPaused || buttonId !== "") {
-    //   gameLoop();
-    // }
+    if (!isPaused) {
+      gameLoop();
+    }
 
     switch (buttonId) {
       case "left":
         movePiece(-1, 0);
+        gameLoop(false);
         break;
       case "right":
         movePiece(1, 0);
+        gameLoop(false);
         break;
       case "down":
         movePiece(0, 1);
+        gameLoop(false);
         break;
       case "up":
         rotatePiece();
+        gameLoop(false);
         break;
       case "b":
         rotatePiece();
+        gameLoop(false);
         break;
     }
   }
@@ -167,7 +172,7 @@
 
   let timeoutId;
 
-  const gameLoop = () => {
+  const gameLoop = (isMovePieceNeeded = true) => {
     if (!context || !canvas) {
       return;
     }
@@ -184,7 +189,9 @@
     drawBoard();
     drawPiece();
 
-    movePiece(0, 1);
+    if (isMovePieceNeeded) {
+      movePiece(0, 1);
+    }
 
     timeoutId = setTimeout(gameLoop, 1030 - level * 30);
   };
