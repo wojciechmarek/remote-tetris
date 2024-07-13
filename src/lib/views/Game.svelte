@@ -37,6 +37,7 @@
   let isRemoteController = false;
   let isRemoteDetailsVisible = false;
 
+  let isQrCodeReadyToScan = false;
   let qrCodeValue = "";
   let remoteIp = "";
   let buttonId = "";
@@ -143,6 +144,7 @@
 
   //#region WebRTC helper methods
   const setUpNewWebRTCConnection = async () => {
+    isQrCodeReadyToScan = false;
     const id = generateNewId();
     qrCodeValue = generateNewQrCodeValueBasedOnId(id);
 
@@ -155,7 +157,9 @@
         gameOffer,
         gameIceCandidates
       );
-    }, 100);
+
+      isQrCodeReadyToScan = true;
+    }, 1000);
   };
 
   const applyAnswerAndIceCandidatesFromController = async (
@@ -203,6 +207,7 @@
       <GameStartModal
         {isRemoteController}
         {qrCodeValue}
+        {isQrCodeReadyToScan}
         on:refreshQrCodeClick={handleOnRefreshQrCodeClick}
         on:selectWasdKeysClick={handleOnSelectKeyboardClick}
       />

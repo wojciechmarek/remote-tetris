@@ -9,6 +9,7 @@
 
   export let qrCodeValue: string = "";
   export let isRemoteController: boolean = false;
+  export let isQrCodeReadyToScan: boolean = false;
 
   let controllerStatus = "";
 
@@ -37,7 +38,13 @@
       <div class="game-start__controller">
         <Frame title="Remote controller">
           <div class="game-start__controller-image">
-            <QrCode value={qrCodeValue} size={130} />
+            {#if isQrCodeReadyToScan}
+              <QrCode value={qrCodeValue} size={130} />
+            {:else}
+              <p class="game-start__controller-message">
+                Wait... Setting up the connection.
+              </p>
+            {/if}
           </div>
         </Frame>
         <Button text="Refresh" on:click={onRefreshCodeClick} />
@@ -102,6 +109,12 @@
     height: 160px;
     border-radius: 5px;
     background-color: white;
+    padding: 0.125em;
+  }
+
+  .game-start__controller-message {
+    color: black;
+    padding: 1em;
   }
 
   .game-start__controller-image_img {
