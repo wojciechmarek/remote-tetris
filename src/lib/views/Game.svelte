@@ -6,12 +6,11 @@
     PauseModal
   } from "@components/modals";
   import backgroundImage from "@images/background.webp";
+  import type { ControllerConnectionAnswer } from "@models/controller-connection-answer";
 
   import { QrCodeUtils, WebRTCUtils } from "@utils/index";
   import { WebSocketUtils } from "@utils/web-socket.utils";
   import { onMount } from "svelte";
-
-  const isDebugMode = true;
 
   //#region Utilities
   const { generateNewId, generateNewQrCodeValueBasedOnId } = QrCodeUtils();
@@ -25,8 +24,8 @@
     subscribeForChannelOpenFromRemoteController
   } = WebRTCUtils();
   const {
-    emitIdAndOfferAndIceCandidatesToServer,
-    subscribeForAnswerAndIceCandidatesFromServer
+    sendGameConnectionOfferToTheServer,
+    subscribeForControllerConnectionAnswerFromTheServer
   } = WebSocketUtils();
   //#endregion
 
@@ -41,6 +40,13 @@
   let qrCodeValue = "";
   let remoteIp = "";
   let buttonId = "";
+  //#endregion
+
+  //#region Debug Mode variable
+  let isDebugMode = true;
+  if (import.meta.env.VERCEL_ENV === "production") {
+    isDebugMode = false;
+  }
   //#endregion
 
   //#region Event handlers
@@ -140,16 +146,22 @@
     const id = generateNewId();
     qrCodeValue = generateNewQrCodeValueBasedOnId(id);
 
-    const offer = await initNewWebRTCPeer();
-    const iceCandidates = getIceCandidates();
+    const gameOffer = await initNewWebRTCPeer();
+    const gameIceCandidates = getIceCandidates();
 
     setTimeout(async () => {
-      await emitIdAndOfferAndIceCandidatesToServer(id, offer, iceCandidates);
+      await sendGameConnectionOfferToTheServer(
+        id,
+        gameOffer,
+        gameIceCandidates
+      );
     }, 100);
   };
 
-  const applyReceivedConnectionDataFromController = async (result) => {
-    const { answer, iceCandidates } = result;
+  const applyAnswerAndIceCandidatesFromController = async (
+    answer: RTCSessionDescriptionInit,
+    iceCandidates: RTCIceCandidateInit[]
+  ) => {
     const sessionDescription = new RTCSessionDescription(answer);
     await setOfferToThePeer(sessionDescription);
     await setIceCandidatesToThePeer(iceCandidates);
@@ -160,9 +172,11 @@
   onMount(async () => {
     await setUpNewWebRTCConnection();
 
-    subscribeForAnswerAndIceCandidatesFromServer(async (result) => {
-      await applyReceivedConnectionDataFromController(result);
-      remoteIp = calculateRemoteIpAddress(result.iceCandidates);
+    subscribeForControllerConnectionAnswerFromTheServer(async (result) => {
+      const { answer, iceCandidates } = result as ControllerConnectionAnswer;
+
+      await applyAnswerAndIceCandidatesFromController(answer, iceCandidates);
+      remoteIp = calculateRemoteIpAddress(iceCandidates);
     });
 
     subscribeForButtonPressFromRemoteController((remoteButtonId) => {
@@ -183,7 +197,7 @@
   </div>
   <div class="game__main-content">
     {#if isDebugMode}
-      <p>{qrCodeValue}</p>
+      <p class="game__debug-controller-url">{qrCodeValue}</p>
     {/if}
     {#if isGameStartModalVisible}
       <GameStartModal
@@ -254,6 +268,10 @@
     width: 100%;
     top: 0;
     left: 0;
+  }
+
+  .game__debug-controller-url {
+    position: absolute;
   }
 
   @media screen and (max-width: 992px) {

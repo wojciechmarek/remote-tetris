@@ -1,34 +1,46 @@
-import { io } from "socket.io-client";
+import type { ControllerConnectionAnswer, GameConnectionOffer } from "@models/index";
 
 export const WebSocketUtils = () => {
-  const server = import.meta.env.VITE_SERVER_URL;
-  const socket = io(server);
+  const url = import.meta.env.VITE_SERVER_WEB_SOCKET_URL;
+  const ws = new WebSocket(url);
 
-  const emitIdAndOfferAndIceCandidatesToServer = async (
+  ws.onerror = error => console.error(error);
+  ws.onopen = event => console.info(event);
+
+  const sendGameConnectionOfferToTheServer = async (
     id: string,
     offer: RTCSessionDescriptionInit,
     iceCandidates: RTCIceCandidateInit[]
   ) => {
-    const payload = JSON.stringify({
-      id,
-      offer,
-      iceCandidates
-    });
 
-    socket.emit("idOfferIceCandidates", payload);
+    const gameConnectionOffer: GameConnectionOffer = {
+      type: "game-connection-offer",
+      id: id,
+      date: Date.now(),
+      offer: offer,
+      iceCandidates: iceCandidates
+    }
+
+    setTimeout(() => {
+      ws.send(JSON.stringify(gameConnectionOffer));
+    }, 1000);
+
   };
 
-  const subscribeForAnswerAndIceCandidatesFromServer = callback => {
-    socket.on("answerIceCandidates", async result => {
-      callback({
-        answer: result.answer,
-        iceCandidates: result.iceCandidates
-      });
-    });
+  const subscribeForControllerConnectionAnswerFromTheServer = callback => {
+    ws.onmessage = message => {      
+      const controllerConnectionAnswer = JSON.parse(message.data) as ControllerConnectionAnswer;
+
+      if (controllerConnectionAnswer.type !== "controller-connection-answer") {
+        return;
+      }
+
+      callback(controllerConnectionAnswer);
+    }
   };
 
   return {
-    emitIdAndOfferAndIceCandidatesToServer,
-    subscribeForAnswerAndIceCandidatesFromServer
+    sendGameConnectionOfferToTheServer,
+    subscribeForControllerConnectionAnswerFromTheServer
   };
 };

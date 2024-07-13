@@ -13,8 +13,8 @@
     sendKeyIdThoughtChannel
   } = WebRTCUtils();
   const {
-    getOfferAndIceCandidatesByIdFromTheServer,
-    postTheAnswerAndIceCandidatesToTheServer
+    getGameConnectionOfferFromTheServer,
+    postControllerConnectionAnswerToTheServer
   } = ApiUtils();
   //#endregion
 
@@ -30,25 +30,24 @@
 
   //#region OnMount
   onMount(async () => {
-    const remoteOfferAndIceCandidates =
-      await getOfferAndIceCandidatesByIdFromTheServer(id);
-    const answer = await initWebRTCPeerBasedOnOfferAndIceCandidates(
-      remoteOfferAndIceCandidates
+    const gameConnectionOffer = await getGameConnectionOfferFromTheServer(id);
+
+    const controllerAnswer = await initWebRTCPeerBasedOnOfferAndIceCandidates(
+      gameConnectionOffer.offer,
+      gameConnectionOffer.iceCandidates
     );
 
-    remoteIp = calculateRemoteIpAddress(
-      remoteOfferAndIceCandidates.iceCandidates
-    );
+    remoteIp = calculateRemoteIpAddress(gameConnectionOffer.iceCandidates);
 
-    const myIceCandidates = getIceCandidates();
+    const controllerIceCandidates = getIceCandidates();
 
     setTimeout(async () => {
-      await postTheAnswerAndIceCandidatesToTheServer(
+      await postControllerConnectionAnswerToTheServer(
         id,
-        answer,
-        myIceCandidates
+        controllerAnswer,
+        controllerIceCandidates
       );
-    }, 1000);
+    }, 3000);
   });
   //#endregion
 </script>

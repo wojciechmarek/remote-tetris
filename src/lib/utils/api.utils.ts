@@ -1,25 +1,34 @@
+import type { ControllerConnectionAnswer } from "@models/controller-connection-answer";
+import type { GameConnectionOffer } from "@models/game-connection-offer";
+
 export const ApiUtils = () => {
-  const server = import.meta.env.VITE_SERVER_URL;
+  const url = import.meta.env.VITE_SERVER_HTTP_URL;
 
-  const getOfferAndIceCandidatesByIdFromTheServer = async (id: string) => {
-    const data = await fetch(`${server}/offer/${id}`, {
+  const getGameConnectionOfferFromTheServer = async (id: string) => {
+    const data = await fetch(`${url}/offer/${id}`, {
       method: "GET"
-    });
+    })
 
-    const result = await data.json();
+    const result  = await data.json() as GameConnectionOffer;
     return result;
   };
 
-  const postTheAnswerAndIceCandidatesToTheServer = async (
+  const postControllerConnectionAnswerToTheServer = async (
     id: string,
     answer: RTCSessionDescriptionInit,
     iceCandidates: RTCIceCandidate[]
   ) => {
-    const payload = { answer, iceCandidates };
 
-    await fetch(`${server}/answer/${id}`, {
+    const controllerConnectionAnswer: ControllerConnectionAnswer = {
+      id: id,
+      type: "controller-connection-answer",
+      answer: answer,
+      iceCandidates: iceCandidates
+    };
+
+    await fetch(`${url}/answer/${id}`, {
       method: "POST",
-      body: JSON.stringify(payload),
+      body: JSON.stringify(controllerConnectionAnswer),
       headers: {
         "Content-Type": "application/json"
       }
@@ -27,7 +36,7 @@ export const ApiUtils = () => {
   };
 
   return {
-    getOfferAndIceCandidatesByIdFromTheServer,
-    postTheAnswerAndIceCandidatesToTheServer
+    getGameConnectionOfferFromTheServer,
+    postControllerConnectionAnswerToTheServer
   };
 };

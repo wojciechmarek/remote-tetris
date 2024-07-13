@@ -7,7 +7,7 @@ if (import.meta.env.VERCEL_ENV === "production") {
 }
 
 const app = new App({
-  target: document.getElementById("app")!,
+  target: document.getElementById("app")!
 });
 
 export default app;

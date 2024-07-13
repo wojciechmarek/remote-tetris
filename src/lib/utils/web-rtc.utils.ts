@@ -67,13 +67,10 @@ export const WebRTCUtils = () => {
     return offer;
   };
 
-  const initWebRTCPeerBasedOnOfferAndIceCandidates = async ({
-    offer,
-    iceCandidates
-  }: {
-    offer: RTCSessionDescriptionInit;
-    iceCandidates: RTCIceCandidateInit[];
-  }) => {
+  const initWebRTCPeerBasedOnOfferAndIceCandidates = async (
+    offer: RTCSessionDescriptionInit,
+    iceCandidates: RTCIceCandidateInit[]
+  ) => {
     await setOfferToThePeer(offer);
     await setIceCandidatesToThePeer(iceCandidates);
 
@@ -87,7 +84,7 @@ export const WebRTCUtils = () => {
     }
   };
 
-  const calculateRemoteIpAddress = (iceCandidates: RTCIceCandidate[]) => {
+  const calculateRemoteIpAddress = (iceCandidates: RTCIceCandidateInit[]) => {
     const remoteCandidate = iceCandidates.find(ice =>
       ice.candidate.includes("raddr")
     );

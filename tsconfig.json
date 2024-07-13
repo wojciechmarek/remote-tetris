@@ -22,6 +22,9 @@
       "@components/*": [
         "lib/components/*"
       ],
+      "@models/*": [
+        "lib/models/*"
+      ],
       "@utils/*": [
         "lib/utils/*"
       ],
