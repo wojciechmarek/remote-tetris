@@ -19,23 +19,23 @@
     switch (buttonId) {
       case "left":
         movePiece(-1, 0);
-        gameLoop(true);
+        gameLoop();
         break;
       case "right":
         movePiece(1, 0);
-        gameLoop(true);
+        gameLoop();
         break;
       case "down":
         movePiece(0, 1);
-        gameLoop(true);
+        gameLoop();
         break;
       case "up":
         rotatePiece();
-        gameLoop(true);
+        gameLoop();
         break;
       case "b":
         rotatePiece();
-        gameLoop(true);
+        gameLoop();
         break;
     }
   }
@@ -172,7 +172,7 @@
 
   let timeoutId;
 
-  const gameLoop = (isNotMoveDown: boolean = false) => {
+  const gameLoop = () => {
     if (!context || !canvas) {
       return;
     }
@@ -189,9 +189,7 @@
     drawBoard();
     drawPiece();
 
-    if (!isNotMoveDown) {
-      movePiece(0, 1);
-    }
+    movePiece(0, 1);
 
     timeoutId = setTimeout(gameLoop, 1030 - level * 30);
   };
