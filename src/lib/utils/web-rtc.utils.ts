@@ -30,24 +30,46 @@ export const WebRTCUtils = () => {
   //#region Events Listeners
   peer.ondatachannel = event => {
     dataChannel = event.channel;
-    dataChannel.onopen = () => {
-      // status = "Data channel open!";
+    dataChannel.onopen = (ev: Event) => {
+      console.log("[Data Channel Open]", ev);
     };
-    dataChannel.onmessage = event => {
-      // handle
+    dataChannel.onmessage = (ev: MessageEvent) => {
+      console.log("[Data Channel Message]", ev);
+    };
+    dataChannel.onerror = (ev: Event) => {
+      console.log("[Data Channel Error]", ev);
+    };
+    dataChannel.onclose = (ev: Event) => {
+      console.log("[Data Channel Close]", ev);
+    };
+    dataChannel.onbufferedamountlow = (ev: Event) => {
+      console.log("[Data Channel onbufferedamountlow]", ev);
+    };
+    dataChannel.onclosing = (ev: Event) => {
+      console.log("[Data Channel onclosing]", ev);
     };
   };
 
   peer.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
-        if (event.candidate) {
+    console.log("[Data Channel onicecandidate]", event);
+    if (event.candidate) {
       iceCandidates.push(event.candidate);
     }
   };
 
   peer.onconnectionstatechange = function(event) {
+    console.log("[Data Channel onconnectionstatechange]", event);
     if (peer.connectionState === "connected") {
       // handle
     }
+  };
+
+  peer.onsignalingstatechange = function(event) {
+    console.log("[Data Channel onsignalingstatechange]", event);
+  };
+
+  peer.onicecandidateerror = function(event) {
+    console.log("[Data Channel onicecandidateerror]", event);
   };
   //#endregion
 

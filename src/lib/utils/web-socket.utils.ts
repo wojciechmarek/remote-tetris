@@ -4,8 +4,8 @@ export const WebSocketUtils = () => {
   const url = import.meta.env.VITE_SERVER_WEB_SOCKET_URL;
   const ws = new WebSocket(url);
 
-  ws.onerror = error => console.error(error);
-  ws.onopen = event => console.info(event);
+  // ws.onerror = error => console.error(error);
+  // ws.onopen = event => console.info(event);
 
   const sendGameConnectionOfferToTheServer = async (
     id: string,
