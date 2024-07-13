@@ -1,13 +1,15 @@
 <script lang="ts">
-  import GameStartModal from "@components/modals/GameStartModal.svelte";
-  import PauseModal from "@components/modals/PauseModal.svelte";
-  import GameOverModal from "@components/modals/GameOverModal.svelte";
-  import GameBoard from "@components/game-board/GameBoard.svelte";
+  import { GameBoard } from "@components/game-board";
+  import {
+    GameStartModal,
+    GameOverModal,
+    PauseModal
+  } from "@components/modals";
   import backgroundImage from "@images/background.webp";
 
-  import { onMount } from "svelte";
   import { QrCodeUtils, WebRTCUtils } from "@utils/index";
   import { WebSocketUtils } from "@utils/web-socket.utils";
+  import { onMount } from "svelte";
 
   const isDebugMode = true;
 
@@ -28,7 +30,7 @@
   } = WebSocketUtils();
   //#endregion
 
-  //#region Variables
+  //#region Private variables
   let isGameStartModalVisible = true;
   let isGameBoardVisible = false;
   let isPaused = false;
@@ -142,8 +144,6 @@
     const iceCandidates = getIceCandidates();
 
     setTimeout(async () => {
-      console.log("sending to hub:", id, offer, iceCandidates);
-
       await emitIdAndOfferAndIceCandidatesToServer(id, offer, iceCandidates);
     }, 100);
   };
@@ -161,8 +161,6 @@
     await setUpNewWebRTCConnection();
 
     subscribeForAnswerAndIceCandidatesFromServer(async (result) => {
-      console.log("received from server", result);
-
       await applyReceivedConnectionDataFromController(result);
       remoteIp = calculateRemoteIpAddress(result.iceCandidates);
     });
@@ -180,7 +178,7 @@
 
 <div class="game__container">
   <img src={backgroundImage} class="game__background" alt="" />
-  <div class="game__small-resolution">
+  <div class="game__small-resolution-message">
     <p>The resolution is not supported. The minimum width is 992px.</p>
   </div>
   <div class="game__main-content">
@@ -231,23 +229,17 @@
     position: relative;
   }
 
-  .game__small-resolution {
+  .game__small-resolution-message {
     z-index: 1;
     position: absolute;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     top: 0;
     left: 0;
-    display: none;
     background-color: #151c59;
     align-items: center;
     justify-content: center;
-  }
-
-  @media screen and (max-width: 992px) {
-    .game__small-resolution {
-      display: flex;
-    }
+    display: none;
   }
 
   .game__background {
@@ -262,5 +254,15 @@
     width: 100%;
     top: 0;
     left: 0;
+  }
+
+  @media screen and (max-width: 992px) {
+    .game__small-resolution-message {
+      display: flex;
+    }
+
+    .game__main-content {
+      display: none;
+    }
   }
 </style>

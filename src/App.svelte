@@ -1,7 +1,6 @@
 <script lang="ts">
-  import Controller from "@views/Controller.svelte";
-  import Game from "@views/Game.svelte";
   import { Router, Route } from "svelte-navigator";
+  import { Game, Controller } from "@views/index";
 </script>
 
 <main>

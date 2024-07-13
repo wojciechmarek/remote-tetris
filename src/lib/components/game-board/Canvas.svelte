@@ -208,8 +208,6 @@
   });
 
   const onKeyDown = (e: KeyboardEvent) => {
-    console.log(e.code);
-
     switch (e.code) {
       case "Escape":
         dispatch("pauseGame");

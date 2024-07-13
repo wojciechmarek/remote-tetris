@@ -32,7 +32,7 @@ export const WebRTCUtils = () => {
   };
 
   peer.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
-    if (event.candidate) {
+        if (event.candidate) {
       iceCandidates.push(event.candidate);
     }
   };
@@ -46,8 +46,7 @@ export const WebRTCUtils = () => {
 
   //#region Public Methods
   const initNewWebRTCPeer = async () => {
-    dataChannel = peer.createDataChannel("tetris-data");
-
+    dataChannel = peer.createDataChannel("controller");
 
     dataChannel.onopen = (event: Event) => {
       onChannelOpen(true);

@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Nintendo from "../components/controller/Nintendo.svelte";
-  import Status from "../components/controller/Status.svelte";
-  import Warning from "../components/controller/Warning.svelte";
-
+  import { Nintendo, Status, Warning } from "@components/controller";
   import { ApiUtils, WebRTCUtils } from "@utils/index";
 
+  export let id: string;
+
+  //#region Utilities
   const {
     initWebRTCPeerBasedOnOfferAndIceCandidates,
     getIceCandidates,
@@ -16,18 +16,25 @@
     getOfferAndIceCandidatesByIdFromTheServer,
     postTheAnswerAndIceCandidatesToTheServer
   } = ApiUtils();
+  //#endregion
 
-  export let id: string;
+  //#region Private variables
   let remoteIp = "";
+  //#endregion
 
+  //#region Event handlers
+  const handleOnButtonPress = (event: CustomEvent) => {
+    sendKeyIdThoughtChannel(event.detail);
+  };
+  //#endregion
+
+  //#region OnMount
   onMount(async () => {
     const remoteOfferAndIceCandidates =
       await getOfferAndIceCandidatesByIdFromTheServer(id);
     const answer = await initWebRTCPeerBasedOnOfferAndIceCandidates(
       remoteOfferAndIceCandidates
     );
-
-    console.log(remoteOfferAndIceCandidates);
 
     remoteIp = calculateRemoteIpAddress(
       remoteOfferAndIceCandidates.iceCandidates
@@ -36,7 +43,6 @@
     const myIceCandidates = getIceCandidates();
 
     setTimeout(async () => {
-      console.log("posting to the server:", id, answer, myIceCandidates);
       await postTheAnswerAndIceCandidatesToTheServer(
         id,
         answer,
@@ -44,10 +50,7 @@
       );
     }, 1000);
   });
-
-  const handleOnButtonPress = (event: CustomEvent) => {
-    sendKeyIdThoughtChannel(event.detail);
-  };
+  //#endregion
 </script>
 
 <div class="controller__container">
