@@ -19,23 +19,18 @@
     switch (buttonId) {
       case "left":
         movePiece(-1, 0);
-        gameLoop();
         break;
       case "right":
         movePiece(1, 0);
-        gameLoop();
         break;
       case "down":
         movePiece(0, 1);
-        gameLoop();
         break;
       case "up":
         rotatePiece();
-        gameLoop();
         break;
       case "b":
         rotatePiece();
-        gameLoop();
         break;
     }
   }
