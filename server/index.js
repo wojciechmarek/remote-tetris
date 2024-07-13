@@ -28,6 +28,8 @@ let offerAndConnections = [];
 app.get("/offer/:id", function(req, res, next) {
   const id = req.params.id;
   const result = offerAndConnections.find(item => item.offer.id === id);
+
+  console.info("[GET Endpoint] Queried for a game-connection-offer: ", id);
   res.send(result.offer);
 });
 
@@ -39,14 +41,22 @@ app.post("/answer/:id", function(req, res, next) {
 
   connection.send(JSON.stringify(data));
 
+  console.info(
+    "[POST Endpoint] Received a new controller-connection-answer: ",
+    id
+  );
+
   setTimeout(() => {
     offerAndConnections = offerAndConnections.filter(
       item => item.offer.id !== id
     );
 
-    console.log("Successfully removed the offer and connection with id: ", id);
-    console.log(
-      "Waiting offers and connections in the database: ",
+    console.info(
+      "[Database] Successfully removed the offer and connection with id: ",
+      id
+    );
+    console.info(
+      "[Database] Waiting game-connection-offers in the database: ",
       offerAndConnections.length
     );
   }, 5000);
@@ -56,7 +66,11 @@ app.post("/answer/:id", function(req, res, next) {
 //#endregion
 
 //#endregion WebSocket listeners
-wss.on("connection", ws => {
+wss.on("connection", (ws, req) => {
+  console.info("[WebSocket] A new connection established");
+  console.info("[WebSocket] Connected IP: ", req.rawHeaders[13]);
+  console.info("[WebSocket] Used browser: ", req.rawHeaders[9]);
+
   ws.on("message", msg => {
     const message = JSON.parse(msg.toString());
 
@@ -70,6 +84,11 @@ wss.on("connection", ws => {
     };
 
     offerAndConnections.push(offerAndConnection);
+
+    console.info(
+      "[WebSocket] Received a new game-connection-offer: ",
+      message.id
+    );
   });
 });
 
