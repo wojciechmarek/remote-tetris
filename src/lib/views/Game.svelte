@@ -189,6 +189,7 @@
 
     subscribeForChannelOpenFromRemoteController((isChannelOpen) => {
       isRemoteController = isChannelOpen;
+      isRemoteDetailsVisible = isChannelOpen;
     });
   });
   //#endregion

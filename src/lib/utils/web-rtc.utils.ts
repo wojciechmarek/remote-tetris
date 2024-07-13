@@ -17,7 +17,6 @@ export const WebRTCUtils = () => {
   //#endregion
 
   //#region Public Values
-  let isDataChannelOpen = false;
   let dataChannel: RTCDataChannel;
   //#endregion
 

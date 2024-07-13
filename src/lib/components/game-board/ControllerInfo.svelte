@@ -16,10 +16,10 @@
       <span class="start_text">START</span> - pause or resume
     </div>
     <div class="remote-details__row">
-      <span class="remote-details__dot red_dot" /> - quit modal button
+      <span class="remote-details__dot red_dot" /> - quit in modal button
     </div>
     <div class="remote-details__row">
-      <span class="remote-details__dot green_dot" /> - new game modal button
+      <span class="remote-details__dot green_dot" /> - new game in modal button
     </div>
     <div class="remote-details__row">
       <span class="remote-details__dot blue_dot" /> - hide this window
