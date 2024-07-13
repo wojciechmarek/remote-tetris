@@ -88,7 +88,6 @@ export const WebRTCUtils = () => {
       onChannelOpen(false);
     };
 
-
     const offer = await peer.createOffer();
     await peer.setLocalDescription(offer);
 
@@ -143,6 +142,12 @@ export const WebRTCUtils = () => {
   const subscribeForChannelOpenFromRemoteController = callback => {
     onChannelOpen = callback;
   }
+
+  const closeTheCurrentWebRTCConnection = () => {
+    if(peer.connectionState === "connected") {
+      peer.close();
+    }
+  }
   //#endregion
 
   //#region Private Methods
@@ -163,6 +168,7 @@ export const WebRTCUtils = () => {
     setOfferToThePeer,
     setIceCandidatesToThePeer,
     subscribeForButtonPressFromRemoteController,
-    subscribeForChannelOpenFromRemoteController
+    subscribeForChannelOpenFromRemoteController,
+    closeTheCurrentWebRTCConnection
   };
 };

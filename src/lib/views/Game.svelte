@@ -21,7 +21,8 @@
     setIceCandidatesToThePeer,
     calculateRemoteIpAddress,
     subscribeForButtonPressFromRemoteController,
-    subscribeForChannelOpenFromRemoteController
+    subscribeForChannelOpenFromRemoteController,
+    closeTheCurrentWebRTCConnection
   } = WebRTCUtils();
   const {
     sendGameConnectionOfferToTheServer,
@@ -147,6 +148,8 @@
 
   //#region WebRTC helper methods
   const setUpNewWebRTCConnection = async () => {
+    closeTheCurrentWebRTCConnection();
+
     isRemoteController = false;
     isRemoteDetailsVisible = false;
     isQrCodeReadyToScan = false;
