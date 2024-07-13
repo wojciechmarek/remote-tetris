@@ -32,6 +32,8 @@
       case "b":
         rotatePiece();
         break;
+      case "":
+        break;
     }
   }
 
